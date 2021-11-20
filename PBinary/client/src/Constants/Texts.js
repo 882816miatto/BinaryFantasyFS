@@ -835,7 +835,8 @@ const en = {
     plansHeader: "Pending plans",
     export: "Export agenda",
     newPlan: "Advanced planning",
-    newActivity: "New activity"
+    newActivity: "New activity",
+    newSurvey: "New survey"
   },
   activityListItem: {
     every: "Every",
@@ -2145,7 +2146,8 @@ const nl = {
     plansHeader: "In afwachting",
     export: "Exporteer agenda",
     newPlan: "Planning tool",
-    newActivity: "Nieuwe activiteit"
+    newActivity: "Nieuwe activiteit",
+    newSurvey: "Nieuwe enquête"
   },
   activityListItem: {
     every: "Elk",
@@ -3418,7 +3420,8 @@ const it = {
     plansHeader: "Piani in sospeso",
     export: "Esporta l'agenda",
     newPlan: "Pianificazione avanzata",
-    newActivity: "Nuova attività"
+    newActivity: "Nuova attività",
+    newSurvey: "Nuovo sondaggio"
   },
   activityListItem: {
     every: "Ogni",
@@ -4721,7 +4724,8 @@ const el = {
     plansHeader: "Εκκρεμή σχέδια",
     export: "Εξαγωγή Ημερολογίου",
     newPlan: "Νέο σχέδιο",
-    newActivity: "Νέα δραστηριότητα"
+    newActivity: "Νέα δραστηριότητα",
+    newSurvey: "νέα έρευνα"
   },
   activityListItem: {
     every: "Κάθε",
@@ -6023,7 +6027,8 @@ const hu = {
     plansHeader: "Függőben lévő tervek",
     export: "Program exportálása",
     newPlan: "Speciális tervezés",
-    newActivity: "Új tevékenység"
+    newActivity: "Új tevékenység",
+    newSurvey: "Új felmérés"
   },
   activityListItem: {
     every: "Mindegyik",
@@ -7113,7 +7118,8 @@ const fr = {
     "plansHeader": "Plannings en attente",
     "export": "Exporter l'agenda",
     "newPlan": "Planification avancée",
-    "newActivity": "Nouvelle activité"
+    "newActivity": "Nouvelle activité",
+    "newSurvey": "Nouvelle enquête"
   },
   "activityListItem": {
     "every": "Tous les",

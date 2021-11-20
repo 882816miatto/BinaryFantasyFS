@@ -43,6 +43,16 @@ const styles = {
     backgroundColor: "#ff6f00",
     zIndex: 100,
     fontSize: "2rem"
+  },
+  addSurvey: {
+    right: "0.5rem",
+    height: "4rem",
+    width: "4rem",
+    borderRadius: "50%",
+    border: "solid 0.5px #999",
+    backgroundColor: "#ff6f00",
+    zIndex: 100,
+    fontSize: "2rem"
   }
 };
 
@@ -314,6 +324,26 @@ class GroupActivities extends React.Component {
                 onClick={() => this.add("plans")}
               >
                 <i className="fas fa-calendar" />
+              </Fab>
+            </div>
+            <div
+              className="row no-gutters"
+              style={{
+                bottom: "26rem",
+                right: "7%",
+                zIndex: 100,
+                position: "fixed",
+                alignItems: "center"
+              }}
+            >
+              <div className=" activitiesFabLabel">{texts.newSurvey}</div>
+              <Fab
+                color="primary"
+                aria-label="addSurvey"
+                className={classes.addSurvey}
+                onClick={() => this.add("survies")}
+              >
+                <i className="fas fa-poll" />
               </Fab>
             </div>
           </React.Fragment>
