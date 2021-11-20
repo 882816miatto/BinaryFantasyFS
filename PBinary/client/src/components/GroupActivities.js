@@ -8,6 +8,7 @@ import Texts from "../Constants/Texts";
 import ActivityOptionsModal from "./OptionsModal";
 import ActivityListItem from "./ActivityListItem";
 import PlanListItem from "./PlanListItem";
+import SurveyListItem from "./SurveyListItem";
 import ConfirmDialog from "./ConfirmDialog";
 import Log from "./Log";
 
@@ -80,6 +81,18 @@ const fetchPlans = groupId => {
     });
 };
 
+const fetchSurveis = groupId => {
+  return axios
+    .get(`/api/groups/${groupId}/surveis`)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      Log.error(error);
+      return [];
+    });
+};
+
 class GroupActivities extends React.Component {
   constructor(props) {
     super(props);
@@ -97,6 +110,7 @@ class GroupActivities extends React.Component {
     const { group_id: groupId } = group;
     const activities = await fetchActivites(groupId);
     const plans = await fetchPlans(groupId);
+    const surveis = await fetchSurveis(groupId);
     const acceptedActivities = activities.filter(
       activity => activity.status === "accepted"
     );
@@ -106,7 +120,8 @@ class GroupActivities extends React.Component {
       fetchedData: true,
       activities: acceptedActivities,
       pendingActivities,
-      plans
+      plans,
+      surveis
     });
   }
 
@@ -146,6 +161,20 @@ class GroupActivities extends React.Component {
         {plans.map((plan, index) => (
           <li key={index}>
             <PlanListItem plan={plan} groupId={groupId} />
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  renderSurveis = () => {
+    const { group, surveis } = this.state;
+    const { group_id: groupId } = group;
+    return (
+      <ul>
+        {surveis.map((survey, index) => (
+          <li key={index}>
+            <SurveyListItem survey={survey} groupId={groupId} />
           </li>
         ))}
       </ul>
@@ -201,7 +230,8 @@ class GroupActivities extends React.Component {
       pendingActivities,
       showAddOptions,
       fetchedData,
-      plans
+      plans,
+      surveis
     } = this.state;
     const { name } = group;
     const texts = Texts[language].groupActivities;
@@ -341,7 +371,7 @@ class GroupActivities extends React.Component {
                 color="primary"
                 aria-label="addSurvey"
                 className={classes.addSurvey}
-                onClick={() => this.add("survies")}
+                onClick={() => this.add("surveis")}
               >
                 <i className="fas fa-poll" />
               </Fab>
@@ -359,6 +389,12 @@ class GroupActivities extends React.Component {
             <div id="groupActivitiesContainer" className="horizontalCenter">
               <h1 className="">{texts.plansHeader}</h1>
               {this.renderPlans()}
+            </div>
+          )}
+          {fetchedData && surveis.length > 0 && (
+            <div id="groupActivitiesContainer" className="horizontalCenter">
+              <h1 className="">{texts.surveisHeader}</h1>
+              {this.renderSurveis()}
             </div>
           )}
         </div>
