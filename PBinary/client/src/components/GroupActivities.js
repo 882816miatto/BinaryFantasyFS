@@ -341,7 +341,7 @@ class GroupActivities extends React.Component {
                 color="primary"
                 aria-label="addSurvey"
                 className={classes.addSurvey}
-                onClick={() => this.add("survies")}
+                onClick={() => this.add("surveis")}
               >
                 <i className="fas fa-poll" />
               </Fab>
