@@ -1203,33 +1203,6 @@ router.get('/:groupId/show-surveys-by-group-id', async (req, res) => {
 
 });
 
-//TO DELETE
-router.get('/:groupId/plans', async (req, res, next) => {
-  if (!req.user_id) {
-    return res.status(401).send('Not authenticated')
-  }
-  const userId = req.user_id
-  const { groupId } = req.params
-  try {
-    const member = await Member.findOne({
-      group_id: groupId,
-      user_id: userId,
-      group_accepted: true,
-      user_accepted: true
-    })
-    if (!member) {
-      return res.status(401).send('Unauthorized')
-    }
-    const plans = await Plan.find({ group_id: groupId })
-    if (plans.length === 0) {
-      return res.status(404).send('Group has no ongoing plans')
-    }
-    return res.json(plans)
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.patch('/:id/activities/:activityId', async (req, res, next) => {
   if (!req.user_id) {
     return res.status(401).send('Not authenticated')
