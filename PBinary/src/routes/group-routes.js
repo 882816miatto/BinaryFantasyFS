@@ -1194,7 +1194,12 @@ router.get('/:id/activities', (req, res, next) => {
 router.get('/:groupId/show-surveys-by-group-id', async (req, res) => {
 
   // TODO
-  return res.status(200).send('CIAO')
+  let surveyTest = [];
+  const doc1 = {title: "il mio survey title 1", id: "abc1"};
+  const doc2 = {title: "il mio survey title 2", id: "abc2"};
+  const doc3 = {title: "il mio survey title 3", id: "abc3"};
+  surveyTest.push(doc1, doc2, doc3);
+  return res.status(200).send(surveyTest);
 
 });
 

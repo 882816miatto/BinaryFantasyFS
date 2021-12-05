@@ -21,6 +21,7 @@ class SurveyListItem extends React.Component {
       }
 
     handleSurveyClick = event => {
+      debugger;
         const { history } = this.props;
         const { pathname } = history.location;
         history.push(`${pathname}/${event.currentTarget.id}`);
@@ -37,14 +38,14 @@ class SurveyListItem extends React.Component {
               onKeyPress={this.handleSurveyClick}
               className="row no-gutters"
               style={{ minHheight: "7rem", cursor: "pointer" }}
-              id={survey.survey_id}
+              id={survey.id}
               onClick={this.handleSurveyClick}
             >
               <div className="col-2-10">
                 <i
                   style={{
                     fontSize: "3rem",
-                    color: survey.color
+                    color: "#f44336"//survey.color
                   }}
                   className="fas fa-poll center"
                 />
