@@ -11,6 +11,7 @@ import PlanListItem from "./PlanListItem";
 import SurveyListItem from "./Survey/SurveyListItem";
 import ConfirmDialog from "./ConfirmDialog";
 import Log from "./Log";
+import SurveyDAO from "../DAOs/surveyDAO";
 
 const styles = {
   add: {
@@ -82,8 +83,7 @@ const fetchPlans = groupId => {
 };
 
 const fetchSurveis = groupId => {
-  return axios
-    .get(`/api/groups/${groupId}/surveis`)
+  return SurveyDAO.getAllSurveysByGroupId(groupId)
     .then(response => {
       return response.data;
     })

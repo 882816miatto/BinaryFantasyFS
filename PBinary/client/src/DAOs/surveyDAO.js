@@ -10,6 +10,6 @@ export default class SurveyDAO {
 
     static getSurveysByUserId(userId) { return axios.get('api/surveys/show-surveys-by-user-id', {params: {userId: userId} }); }
 
-    static getAllSurveysByGroupId(groupId) { return axios.get('api/surveys/show-surveys-by-group-id', {params: {groupId: groupId} }); }
+    static getAllSurveysByGroupId(groupId) { return axios.get(`/api/groups/${groupId}/show-surveys-by-group-id`); }
 
 }
