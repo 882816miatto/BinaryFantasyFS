@@ -8,7 +8,7 @@ import Texts from "../Constants/Texts";
 import ActivityOptionsModal from "./OptionsModal";
 import ActivityListItem from "./ActivityListItem";
 import PlanListItem from "./PlanListItem";
-import SurveyListItem from "./SurveyListItem";
+import SurveyListItem from "./Survey/SurveyListItem";
 import ConfirmDialog from "./ConfirmDialog";
 import Log from "./Log";
 

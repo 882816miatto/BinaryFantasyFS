@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Skeleton } from "antd";
+// import { Skeleton } from "antd";
 import { withRouter } from "react-router-dom";
-import withLanguage from "./LanguageContext";
+import withLanguage from "../LanguageContext";
 
 
 class SurveyListItem extends React.Component {
@@ -14,9 +14,9 @@ class SurveyListItem extends React.Component {
 
     async componentDidMount() {
         const { survey } = this.state;
-        const userId = JSON.parse(localStorage.getItem("user")).id;
-        const { groupId } = this.props;
-        const surveyId = survey.survey_id;
+        // const userId = JSON.parse(localStorage.getItem("user")).id;
+        // const { groupId } = this.props;
+        // const surveyId = survey.survey_id;
         this.setState({ survey });
       }
 
@@ -28,7 +28,8 @@ class SurveyListItem extends React.Component {
 
     render() {
         const { survey } = this.state;
-        return survey.length ? (
+        //return survey.length ? (
+            return(
           <React.Fragment>
             <div
               role="button"
@@ -39,11 +40,6 @@ class SurveyListItem extends React.Component {
               id={survey.survey_id}
               onClick={this.handleSurveyClick}
             >
-              {survey.subscribed && (
-                <div className="surveyListItemIcon">
-                  <i className="fas fa-user-check" />
-                </div>
-              )}
               <div className="col-2-10">
                 <i
                   style={{
@@ -74,9 +70,9 @@ class SurveyListItem extends React.Component {
               </div>
             </div>
           </React.Fragment>
-        ) : (
-          <Skeleton avatar active paragraph={{ rows: 1 }} />
-        );
+        ) //: (
+          //<Skeleton avatar active paragraph={{ rows: 1 }} />
+        //);
       }
 }
 
