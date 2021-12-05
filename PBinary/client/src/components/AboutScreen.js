@@ -43,7 +43,7 @@ class AboutScreen extends React.Component {
         <BackNavigation
           title={texts.backNavTitle}
           onClick={() => history.goBack()}
-        />
+        />          
         <AboutHeader />
         <div className="findMoreRow">
           <button

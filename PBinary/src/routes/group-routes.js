@@ -1158,6 +1158,8 @@ router.post('/:id/activities', async (req, res, next) => {
   }
 })
 
+// Modify response for average reviews
+
 router.get('/:id/activities', (req, res, next) => {
   if (!req.user_id) {
     return res.status(401).send('Not authenticated')
