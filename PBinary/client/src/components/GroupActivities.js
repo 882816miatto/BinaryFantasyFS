@@ -82,7 +82,7 @@ const fetchPlans = groupId => {
     });
 };
 
-const fetchSurveis = groupId => {
+const fetchSurveys = groupId => {
   return SurveyDAO.getAllSurveysByGroupId(groupId)
     .then(response => {
       return response.data;
@@ -110,7 +110,7 @@ class GroupActivities extends React.Component {
     const { group_id: groupId } = group;
     const activities = await fetchActivites(groupId);
     const plans = await fetchPlans(groupId);
-    const surveis = await fetchSurveis(groupId);
+    const surveys = await fetchSurveys(groupId);
     const acceptedActivities = activities.filter(
       activity => activity.status === "accepted"
     );
@@ -121,7 +121,7 @@ class GroupActivities extends React.Component {
       activities: acceptedActivities,
       pendingActivities,
       plans,
-      surveis
+      surveys
     });
   }
 
@@ -167,12 +167,12 @@ class GroupActivities extends React.Component {
     );
   };
 
-  renderSurveis = () => {
-    const { group, surveis } = this.state;
+  renderSurveys = () => {
+    const { group, surveys } = this.state;
     const { group_id: groupId } = group;
     return (
       <ul>
-        {surveis.map((survey, index) => (
+        {surveys.map((survey, index) => (
           <li key={index}>
             <SurveyListItem survey={survey} groupId={groupId} />
           </li>
@@ -231,7 +231,7 @@ class GroupActivities extends React.Component {
       showAddOptions,
       fetchedData,
       plans,
-      surveis
+      surveys
     } = this.state;
     const { name } = group;
     const texts = Texts[language].groupActivities;
@@ -371,7 +371,7 @@ class GroupActivities extends React.Component {
                 color="primary"
                 aria-label="addSurvey"
                 className={classes.addSurvey}
-                onClick={() => this.add("surveis")}
+                onClick={() => this.add("surveys")}
               >
                 <i className="fas fa-poll" />
               </Fab>
@@ -391,10 +391,10 @@ class GroupActivities extends React.Component {
               {this.renderPlans()}
             </div>
           )}
-          {fetchedData && surveis.length > 0 && (
+          {fetchedData && surveys.length > 0 && (
             <div id="groupActivitiesContainer" className="horizontalCenter">
-              <h1 className="">{texts.surveisHeader}</h1>
-              {this.renderSurveis()}
+              <h1 className="">{texts.surveysHeader}</h1>
+              {this.renderSurveys()}
             </div>
           )}
         </div>
