@@ -38,6 +38,8 @@ if (process.env.CITYLAB !== 'ALL') {
   })
 }
 
+// Called every time a request is sent to the server
+
 app.use(async (req) => {
   try {
     let token = req.headers.authorization
@@ -69,6 +71,15 @@ app.use('/api/profiles', require('./routes/profile-routes'))
 app.use('/api/children', require('./routes/child-routes'))
 app.use('/api/github', require('./routes/github-routes'))
 app.use('/api/community', require('./routes/community-routes'))
+
+// Start my update
+
+app.use('/api/tests', require('./routes/test-routes'))
+app.use('/api/surveys', require('./routes/survey-routes'))
+app.use('/api/activities', require('./routes/activity-routes'))
+app.use('/api/answers', require('./routes/answer-routes'))
+
+// End my update
 
 if (config.util.getEnv('NODE_ENV') === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')))
