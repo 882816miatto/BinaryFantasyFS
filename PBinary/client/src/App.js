@@ -158,6 +158,12 @@ const SignUpScreen = Loadable({
   loading: () => Loading
 });
 
+//Surveys
+const SurveyScreen = Loadable({
+  loader: () => import("./components/Survey/SurveyScreen"),
+  loading: () => Loading
+});
+
 axios.interceptors.request.use(
   config => {
     let userToken = "";
@@ -386,6 +392,12 @@ class App extends React.Component {
               <PrivateRoute
                 path="/groups/:groupId"
                 component={GroupMainScreen}
+              />
+
+              <PrivateRoute
+                exact
+                path="/surveys/show-survey-by-id/:surveyId"
+                component={SurveyScreen}
               />
 
               <Route component={NoMatchScreen} />

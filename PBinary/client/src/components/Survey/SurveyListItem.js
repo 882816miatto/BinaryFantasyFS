@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 // import { Skeleton } from "antd";
 import { withRouter } from "react-router-dom";
 import withLanguage from "../LanguageContext";
-
+//import SurveyDAO from "../../DAOs/surveyDAO";
 
 class SurveyListItem extends React.Component {
     constructor(props) {
@@ -21,10 +21,12 @@ class SurveyListItem extends React.Component {
       }
 
     handleSurveyClick = event => {
-      debugger;
         const { history } = this.props;
-        const { pathname } = history.location;
-        history.push(`${pathname}/${event.currentTarget.id}`);
+        //const { pathname } = history.location;
+        //history.push(`${pathname}/${event.currentTarget.id}`);
+        //history.push(`/groups/${groupId}/activities/pending`);
+        history.push(`/surveys/show-survey-by-id/${event.currentTarget.id}`);
+        //SurveyDAO.getSurveyById(this.state.survey.id)
       };
 
     render() {
