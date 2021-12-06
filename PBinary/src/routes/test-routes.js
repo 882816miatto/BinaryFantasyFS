@@ -7,7 +7,7 @@ const Review = require('../models/review')
 
 const SurveyDoc = require('../docsHelper/surveyDoc');
 const AnswerDoc = require('../docsHelper/answerDoc');
-const ReviewDoc = require('../docsHelper/reviewDoc')
+const ReviewDoc = require('../docsHelper/reviewDoc');
 
 // Preliminar database testing
 
@@ -140,6 +140,201 @@ router.get('/getTrial', (req, res) => {
     else 
         return res.status(500).send('Problem with get');
 
+});
+
+router.post('/create-surveys', async (req, res) => {
+
+    try {
+
+        let data = req.body.data;
+        let surveys = data.map(s => new SurveyDoc(s)).map(s => s.encodeForSaving());
+        let response = await Survey.insertMany(surveys);
+
+        return res.status(200).send(response);
+
+    } catch (e) {
+
+        res.status(500).send(e);
+
+    }
+
+});
+
+router.get('/show-surveys/:groupId/:userId', async (req, res) => {
+  
+    const group_id = req.params.groupId;
+    const user_id = req.params.userId;
+
+    try {
+
+        let surveysData = await Survey.find({group_id: group_id});
+        let answersData = await Answer.find({user_id: user_id});
+        
+        let idSurveySet = new Set(answersData.map(doc => doc.survey_id));
+
+        surveysData = surveysData.filter(doc => idSurveySet.has(doc.id) === false)
+        .map(doc => {
+            return {
+                title: doc.title,
+                id: doc.id
+            }
+        });
+
+        return res.status(200).send(surveysData);
+
+    } catch (e) {return res.status(500).send(e); }
+  
+});
+
+router.get('/show-surveys-by-user-id/:id', async (req, res) => {
+
+    const userId = req.params.id;
+
+    try {
+
+        let surveysData = await Survey.find({user_id: userId});
+
+        if (surveysData.length > 0) {
+            surveysData = surveysData.map(doc => {
+                return {
+                    id: doc.id,
+                    title: doc.title
+                }
+            });
+        }
+
+        else 
+            surveysData = []
+
+        return res.status(200).send(surveysData);
+
+    } catch (e) {
+
+        return res.status(500).send(e);
+
+    }
+
+});
+
+router.get('/show-survey-by-id/:id', async (req, res) => {
+
+    const id = req.params.id;
+
+    try {
+
+        let survey = await Survey.findById(id);
+
+        if (!!!survey) 
+            return res.status(500).send('Invalid id');
+
+        let surveyObj = {
+
+            id: survey.id,
+
+            status: survey.status,
+            title: survey.title,
+            email: survey.email,
+
+            questions: survey.questions
+
+        }
+
+        return res.status(200).send(surveyObj);
+
+
+    } catch (e) {
+
+        return res.status(500).send(e);
+
+    }
+
+});
+
+router.get('/delete-all', async (req, res) => {
+
+    try { 
+        await Survey.deleteMany({}); 
+        await Answer.deleteMany({});
+        return res.status(200).send('Deletion completed');
+    }
+
+    catch (e) { return res.status(500).send('Something went wrong durind deletion'); }
+
 })
+
+router.delete('/delete-survey', async (req, res) => {
+
+    // Deleteing a survey implies the deletion of all answers associated with it
+
+    if (!req.body.surveyId){
+        return res.status(400).send('Bad request');
+    }
+
+    const surveyId = req.body.surveyId;
+
+    try {
+
+        await Survey.findByIdAndDelete(surveyId);
+        await Answer.deleteMany({survey_id: surveyId});
+
+        let checkSurvey = await Survey.findById(surveyId);
+
+        if (checkSurvey)
+            return res.status(500).send('Deletion has not been performed as expected');
+
+        else
+            return res.status(200).send('Deletion completed');
+
+    } catch (e) {
+
+        return res.status(500).send(e);
+
+    }
+
+});
+
+router.post('/create-answers', async (req, res) => {
+
+    try {
+
+        let ansArray = req.body;
+        ansArray = ansArray.map(doc => new AnswerDoc(doc).encodeForSaving());
+        await Answer.insertMany(ansArray);
+
+        return res.status(200).send('Creation completed');
+
+    } catch (e) {
+
+        return res.status(500).send(e);
+
+    }
+
+})
+
+router.post('/store', async (req, res) => {
+
+    let surveyDoc;
+
+    try { surveyDoc = new SurveyDoc(req.body.survey); } 
+    catch (e) { return res.status(400).send('Bad request'); }
+
+    try {
+
+        let response = await Survey.create(surveyDoc.encodeForSaving());
+        response = await Survey.findById(response._id);
+
+        if (!!!response)
+            return res.status(500).send('Something went wrong while inserting the document');
+
+        else 
+            return res.status(200).send('Survey inserted');
+
+    } catch (e) {
+
+        return res.status(500).send('Something went wrong while inserting the document');
+
+    }
+
+});
 
 module.exports = router
