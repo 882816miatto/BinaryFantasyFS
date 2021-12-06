@@ -14,6 +14,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import SurveyDAO from "../../DAOs/surveyDAO";
+import AnswerDAO from "../../DAOs/answerDAO";
 import Divider from '@material-ui/core/Divider';
 import SaveIcon from '@material-ui/icons/Save';
 import Button from '@material-ui/core/Button';
@@ -93,14 +94,25 @@ class SurveyScreen extends React.Component {
                 }
             }
         }
-        
+
         this.setState({
             answers: currentStateAnswers
         });
     }
 
     handleSave = () => {
+        const userId = JSON.parse(localStorage.getItem("user")).id;
+        const { match } = this.props;
+        const { surveyId } = match.params;
+        const answerObj = {...this.state.answers};
+        const surveyAnswers = {
+            answers: Object.keys(answerObj).map((question) => ({question_id: question, optionsSelected: answerObj[question]})),
+            survey_id: surveyId,
+            user_id: userId
 
+        }
+
+        AnswerDAO.insertOneAnswer(surveyAnswers);
     }
 
     getRadioValue = (questionId) => {
@@ -126,7 +138,7 @@ class SurveyScreen extends React.Component {
             <React.Fragment>
             <Typography variant="h4">{title}</Typography>
                 {questions.map((question, index) => (
-                    <Card>
+                    <Card key={index}>
                         <CardContent>
                             {question.typeOfQuestion === "radio" ? 
                                 (
@@ -140,7 +152,7 @@ class SurveyScreen extends React.Component {
                                             onChange={(event) => this.handleQuestionChange(event, question)}
                                         >
                                         {question.questionOptions.map((option, index) => (
-                                            <FormControlLabel value={option.id} control={<Radio />} label={option.value} />
+                                            <FormControlLabel key={index} value={option.id} control={<Radio />} label={option.value} />
                                         ))}
                                         </RadioGroup>
                                     </FormControl>
@@ -150,11 +162,12 @@ class SurveyScreen extends React.Component {
                                         <FormGroup>
                                             {question.questionOptions.map((option, index) => (
                                                     <FormControlLabel
+                                                    key={index}
                                                     control={
                                                         <Checkbox 
                                                             checked={this.getCheckBoxValue(question.id, option.id)} 
                                                             onChange={(event) => this.handleQuestionChange(event, question, option.id)} 
-                                                            name={option} 
+                                                            name={option.value} 
                                                         />
                                                     }
                                                     label={option.value}
@@ -168,9 +181,12 @@ class SurveyScreen extends React.Component {
                     </Card>
                 ))}
                 <Divider />
-                <Button variant="contained" color="success" onClick={this.handleSave} endIcon={<SaveIcon />}> 
+                {status && (
+                    <Button variant="contained" onClick={this.handleSave} endIcon={<SaveIcon />}> 
                     Save
                 </Button>
+                )}
+                
             </React.Fragment>
         ) : (
             <LoadingSpinner />

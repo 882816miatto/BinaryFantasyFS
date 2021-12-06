@@ -6,6 +6,6 @@ export default class AnswerDAO {
         return axios.get(`api/answers/show-answers-by-survey-id/${surveyId}`); 
     }
 
-    static insertOneAnswer(answers) { return axios.post('api/answers/store', {answers: answers}); }
+    static insertOneAnswer(answers) { return axios.post('/api/answers/store', {answers: answers}); }
 
 }
