@@ -1190,6 +1190,13 @@ router.get('/:id/activities', (req, res, next) => {
           if (activities.length === 0) {
             return res.status(404).send('Group has no activities')
           }
+
+          // Add avgReviews in order to visulize it
+          for (const act of activities) {
+            act.avgReviews = -1;
+            console.log(act);
+          }
+          
           res.json(activities)
         })
     })

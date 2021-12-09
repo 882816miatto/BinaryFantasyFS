@@ -6,6 +6,8 @@ const Answer = require('../models/answer')
 
 const SurveyDoc = require('../docsHelper/surveyDoc');
 
+// TODO check user_id === req.user_id
+
 router.post('/store', async (req, res) => {
 
     if (!req.user_id) { 
@@ -57,12 +59,8 @@ router.delete('/delete', async (req, res) => {
 
     try {
 
-        let surveyDeleted = await Survey.findByIdAndDelete(surveyId);
-        console.log(surveyDeleted.inspect());
-
-        let answsersDeleted = await Answer.deleteMany({survey_id: surveyId});
-        console.table(answsersDeleted);
-
+        await Survey.findByIdAndDelete(surveyId);
+        await Answer.deleteMany({survey_id: surveyId});
         let checkSurvey = await Survey.findById(surveyId);
 
         if (checkSurvey)
@@ -154,5 +152,34 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
     }
 
 });
+
+// TODO: change in DAO with this route
+router.get('/:groupId/show-surveys-by-group-id', async (req, res) => {
+
+    if (!req.user_id) {
+      return res.status(401).send('Not authenticated');
+    }
+  
+    const group_id = req.params.groupId;
+    const user_id = req.user_id;
+  
+    try {
+  
+      let surveysData = await Survey.find({group_id: group_id});
+      let answersData = await Answer.find({user_id: user_id});
+      let idSurveySet = new Set(answersData.map(doc => doc.survey_id));
+  
+      surveysData = surveysData.filter(doc => idSurveySet.has(doc.id) === false)
+        .map(doc => {
+            return {
+                title: doc.title, 
+                id: doc.id
+            }});
+  
+      return res.status(200).send(surveysData);
+  
+    } catch (e) {return res.status(500).send(e); }
+  
+  });
 
 module.exports = router;
