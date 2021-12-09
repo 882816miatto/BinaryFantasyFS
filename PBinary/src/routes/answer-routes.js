@@ -100,7 +100,7 @@ router.post('/store', async (req, res) => {
         return res.status(401).send('Not authenticated'); 
     }
 
-    if (!!!req.body || !req.body.answers) {
+    if (!!!req.body || !!!req.body.answers) {
         return res.status(400).send('Bad request');
     }
 
@@ -112,9 +112,6 @@ router.post('/store', async (req, res) => {
     */
 
     try { 
-
-        // Tirati fuori il survey_id dalle domanda
-        // aggiungi survey _id e user_id
 
         const question_id = req.body.answers[0].question_id;
         const checkSurvey = await Survey.findOne({'questions._id': question_id});
