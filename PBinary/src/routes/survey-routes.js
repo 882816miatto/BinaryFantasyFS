@@ -146,7 +146,8 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
         return res.status(401).send('Not authenticated');
     }
 
-    const userId = req.userId;
+    const userId = req.user_id;
+    const group_id = req.params.groupId;
 
     try {
 
