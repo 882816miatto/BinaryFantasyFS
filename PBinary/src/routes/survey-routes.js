@@ -147,7 +147,6 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
     }
 
     const userId = req.user_id;
-    const group_id = req.params.groupId;
 
     try {
 
