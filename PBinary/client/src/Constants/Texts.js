@@ -928,7 +928,8 @@ const en = {
     signOut: "Sign out",
     language: "Language",
     export: "Export my data",
-    community: "Community"
+    community: "Community",
+    surveys: "Surveys"
   },
   myFamiliesShareScreen: {
     myGroups: "My groups",
@@ -2235,7 +2236,8 @@ const nl = {
     signOut: "Afmelden",
     language: "Taal",
     export: "Exporteer mijn data",
-    community: "Gemeenschap"
+    community: "Gemeenschap",
+    surveys: "Enquêtes"
   },
   myFamiliesShareScreen: {
     myGroups: "Mijn groepen",
@@ -3510,7 +3512,8 @@ const it = {
     signOut: "Esci ",
     language: "Lingua",
     export: "Esporta i miei dati",
-    community: "Comunità"
+    community: "Comunità",
+    surveys: "Sondaggi"
   },
   myFamiliesShareScreen: {
     myGroups: "I miei gruppi",
@@ -4818,7 +4821,8 @@ const el = {
     signOut: "Αποσύνδεση",
     language: "Γλώσσα",
     export: "Εξαγωγή των δεδομένων μου",
-    community: "Κοινότητα"
+    community: "Κοινότητα",
+    surveys: "έρευνες"
   },
   myFamiliesShareScreen: {
     myGroups: "Οι ομάδες μου",
@@ -6144,7 +6148,8 @@ const hu = {
     signOut: "Kijelentkezés",
     language: "Nyelv",
     export: "Adatok exportálása",
-    community: "Közösség"
+    community: "Közösség",
+    surveys: "Felmérések"
   },
   myFamiliesShareScreen: {
     myGroups: "Csoportjaim",
@@ -7235,7 +7240,8 @@ const fr = {
     "signOut": "Quitter",
     "language": "Langue",
     "export": "Exporter mes données",
-    "community": "Communauté"
+    "community": "Communauté",
+    "surveys": "Enquêtes"
   },
   "myFamiliesShareScreen": {
     "myGroups": "Mes groupes",

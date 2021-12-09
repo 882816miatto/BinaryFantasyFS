@@ -169,6 +169,8 @@ class MyFamiliesShareHeader extends React.Component {
       case "community":
         history.push("/community");
         break;
+      case "surveys":
+        history.push("/surveys")
       default:
     }
   };
@@ -310,7 +312,7 @@ class MyFamiliesShareHeader extends React.Component {
               </div>
             </Menu.Item>
             <Menu.Item
-              style={menuItemWithLine}
+              style={menuItem}
               key="searchgroup"
               className="drawerButtonContainer"
               onClick={this.handleDrawerClick}
@@ -321,6 +323,21 @@ class MyFamiliesShareHeader extends React.Component {
                 </div>
                 <div className="col-3-4">
                   <h1>{texts.searchGroup}</h1>
+                </div>
+              </div>
+            </Menu.Item>
+            <Menu.Item
+              style={menuItemWithLine}
+              key="surveys"
+              className="drawerButtonContainer"
+              onClick={this.handleDrawerClick}
+            >
+              <div className="row no-gutters">
+                <div className="col-1-4">
+                  <i className="fas fa-poll" />
+                </div>
+                <div className="col-3-4">
+                  <h1>{texts.surveys}</h1>
                 </div>
               </div>
             </Menu.Item>

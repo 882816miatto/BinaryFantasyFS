@@ -1,109 +1,186 @@
-import React from "react";
-import ReactDOM from 'react-dom'
-import PropTypes, { objectOf } from "prop-types";
-import withLanguage from "../LanguageContext";
-import Texts from "../../Constants/Texts";
-import LoadingSpinner from "../LoadingSpinner";
-import Log from "../Log";
-import BackNavigation from "../BackNavigation";
-import TextField from '@material-ui/core/TextField';
-import Typography from "@material-ui/core/Typography";
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Divider from '@material-ui/core/Divider';
-import SaveIcon from '@material-ui/icons/Save';
-import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
+import React                  from 'react';
+import PropTypes              from 'prop-types';
+import TextField              from '@material-ui/core/TextField';
+import Button                 from '../shared/Button/Button';
+import BackNavigation         from '../BackNavigation';
+import withLanguage           from '../LanguageContext';
 import './CreateSurveyScreen.css';
-import SurveyQuestion from "./SurveyQuestion";
+import SurveyDAO              from '../../DAOs/surveyDAO';
+import { Snackbar }           from '@material-ui/core';
+import SurveyQuestionEditable from './SurveyQuestion/SurveyQuestionEditable';
 
 class CreateSurveyScreen extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          questions: [],
-          focusedQuestionIdx: 0,
-        }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      questions: [],
+      surveyTitle: '',
+      focusedQuestionIdx: 0,
+      canAddQuestion: true,
+      snackbarOpen: false,
+    };
+  }
 
-    onQuestionAddClicked = () => {
-      console.log('new empty question incoming');
-      const newQuestion = {
-        id: 'tmp-id-' + this.state.questions.length+1,
-        title: '',
-        typeOfQuestion: 'radio',
-        questionOptions: [],
-      }
-      this.setState({
-        questions: [...this.state.questions, newQuestion],
-        focusedQuestionIdx: this.state.questions.length,
-      }, () => console.log(this.state.questions))
-    }
+  onSurveyTitleChanged = (newTitle) => {
+    this.setState({
+      surveyTitle: newTitle,
+    });
+  };
 
-    onQuestionUpdated = (questionUpdated, questionIdx) => {
-      const { questions } = this.state;
-      questions[questionIdx] = questionUpdated;
-      this.setState({
+  onQuestionAddClicked = () => {
+    const { questions } = this.state;
+    const newQuestion = {
+      id: `question-${Date.now()}`,
+      title: '',
+      typeOfQuestion: 'radio',
+      questionOptions: [],
+    };
+    this.setState(
+      {
+        questions: [...questions, newQuestion],
+        focusedQuestionIdx: questions.length,
+        canAddQuestion: false,
+      });
+  };
+
+  onQuestionUpdated = (questionUpdated, questionIdx) => {
+    const { questions } = this.state;
+    questions[questionIdx] = questionUpdated;
+    this.setState(
+      {
         questions,
-      })
+      },
+      () => this.updateCanAddQuestion()
+    );
+  };
+
+  updateCanAddQuestion = () => {
+    let canAddQuestion = true;
+    let canCreateSurvey = false;
+    const { questions, surveyTitle } = this.state;
+
+    if (questions.length) {
+      // controllo che le domande inserite abbiano tutti i campi compilati prima di poter creare una nuova odomanda
+      canAddQuestion = questions.every(q => !!q.title && !!q.typeOfQuestion && q.questionOptions && q.questionOptions.length && q.questionOptions.length > 1 && q.questionOptions.every(o => !!o.value));
     }
 
-    onQuestionFocused = (questionIdx) => {
-      this.setState({
-        focusedQuestionIdx: questionIdx,
-      })
+    if (canAddQuestion && surveyTitle) {
+      canCreateSurvey = true;
     }
 
-    onQuestionDelete = (questionIdx) => {
-      const { questions } = this.state;
-      let newQuestions = [...questions];
-      newQuestions = newQuestions.filter((q, i) => i !== questionIdx);
-      this.setState({
+    this.setState({
+      canAddQuestion,
+      canCreateSurvey,
+    });
+  };
+
+  onQuestionFocused = (questionIdx) => {
+    this.setState({
+      focusedQuestionIdx: questionIdx,
+    });
+  };
+
+  onQuestionDelete = (questionIdx) => {
+    let { questions, canAddQuestion } = this.state;
+    let newQuestions = [...questions];
+    newQuestions = newQuestions.filter((q, i) => i !== questionIdx);
+    this.setState(
+      {
         questions: [...newQuestions],
-      }, () => {console.log(this.state)})
-    }
+      },
+      () => {
+        this.updateCanAddQuestion();
+      }
+    );
+  };
 
-    render() {
-        const { history } = this.props;
-        const { questions, focusedQuestionIdx } = this.state;
-        return(
-            <div className="create-survey">
-              <BackNavigation
-                title={"texts.backNavTitle"}
-                onClick={() => history.goBack()}
-              />
-              <h1>Creazione nuovo sondaggio</h1>
-              <TextField
-                required
-                id="survey-title-field"
-                label="Titolo sondaggio"
-                variant="outlined"
-              />
-              <div className="create-survey__questions">
-                {questions.map((q, i) => (
-                  <SurveyQuestion 
-                    question={q}
-                    editable={true} 
-                    key={q.id} 
-                    focused={focusedQuestionIdx === i}
-                    onQuestionDelete={() => this.onQuestionDelete(i)}
-                    onQuestionUpdated={(updatedQuestion) => this.onQuestionUpdated(updatedQuestion, i)}
-                    onQuestionFocused={() => this.onQuestionFocused(i)}/>
-                ))}
-              </div>
-              <Button id="add-question-btn" variant="contained" onClick={this.onQuestionAddClicked} startIcon={<AddIcon />}> 
-                Aggiungi domanda
-              </Button>
-              <div className="create-survey__footer">
-                <Button variant="contained" onClick={this.renderQuestion} startIcon={<SaveIcon />}> 
-                  Crea sondaggio
-                </Button>
-              </div>
-          </div>
-        )
+  onQuestionnaireCreate = () => {
+    const { surveyTitle, questions } = this.state;
+    const { match } = this.props;
+    const { params } = match;
+    let userId;
+    const user = localStorage.getItem('user');
+    if (user) {
+      userId = JSON.parse(user).id;
     }
+    const payload = {
+      status: true,
+      title: surveyTitle,
+      user_id: userId,
+      group_id: params.groupId,
+      questions: questions.map(q => ({
+        title: q.title,
+        typeOfQuestion: q.typeOfQuestion,
+        questionOptions: q.questionOptions.map(o => o.value),
+      })),
+    };
+    SurveyDAO.insertOneSurvey(payload)
+             .then(() => {
+               const { history } = this.props;
+               this.setState({
+                 snackbarOpen: true,
+               }, () => setTimeout(() => history.goBack(), 2500));
+             });
+  };
+
+  handleSnackbarClose = () => {
+    this.setState({
+      snackbarOpen: false,
+    });
+  };
+
+  render() {
+    const { history } = this.props;
+    const { questions, focusedQuestionIdx, canAddQuestion, canCreateSurvey, snackbarOpen } = this.state;
+    return (
+      <div className="create-survey">
+        <BackNavigation title="texts.backNavTitle"
+                        onClick={() => history.goBack()} />
+        <div className="create-survey__content">
+          <h1>Creazione nuovo sondaggio</h1>
+          <TextField required
+                     id="survey-title-field"
+                     placeholder="Titolo sondaggio"
+                     variant="outlined"
+                     onChange={(e) => this.onSurveyTitleChanged(e.target.value)} />
+          <div className="create-survey__questions">
+            {questions.map((q, i) => (
+              <SurveyQuestionEditable question={q}
+                                      editable
+                                      key={q.id}
+                                      focused={focusedQuestionIdx === i}
+                                      onQuestionDelete={() => this.onQuestionDelete(i)}
+                                      onQuestionUpdated={(updatedQuestion) =>
+                                        this.onQuestionUpdated(updatedQuestion, i)
+                                      }
+                                      onQuestionFocused={() => this.onQuestionFocused(i)} />
+            ))}
+          </div>
+          <div className="create-survey__add-question-btn">
+            <Button label="Aggiungi domanda"
+                    type="standard-icon"
+                    color="accent"
+                    iconClass="fas fa-plus"
+                    disabled={!canAddQuestion}
+                    onClick={this.onQuestionAddClicked} />
+          </div>
+          <div className="create-survey__footer">
+            <Button label="Crea sondaggio"
+                    disabled={!canCreateSurvey}
+                    onClick={this.onQuestionnaireCreate} />
+          </div>
+        </div>
+        <Snackbar anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+                  open={snackbarOpen}
+                  autoHideDuration={6000}
+                  onClose={this.handleSnackbarClose}
+                  message="Sondaggio creato" />
+      </div>
+    );
+  }
 }
 
 export default withLanguage(CreateSurveyScreen);
@@ -111,5 +188,5 @@ export default withLanguage(CreateSurveyScreen);
 CreateSurveyScreen.propTypes = {
   history: PropTypes.object,
   language: PropTypes.string,
-  match: PropTypes.object
+  match: PropTypes.object,
 };

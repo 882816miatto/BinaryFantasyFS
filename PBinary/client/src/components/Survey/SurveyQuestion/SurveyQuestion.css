@@ -1,0 +1,17 @@
+.survey-question {
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px 10px 0;
+}
+
+.survey-question .MuiRadio-colorSecondary.Mui-checked, .MuiCheckbox-colorSecondary.Mui-checked {
+  color: var(--primary-color);
+}
+
+.survey-question .MuiFormLabel-root, .MuiTypography-body1 {
+  font-size: 14px;
+}
+
+.survey-question .MuiFormLabel-root.Mui-focused {
+  color: black;
+}

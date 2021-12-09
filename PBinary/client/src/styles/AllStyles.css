@@ -940,7 +940,7 @@
 }
 .textareaInput {
   padding-top: 1.5rem !important;
-  width: 100% !;
+  width: 100% !important;
   background-color: #dcdcdc !important;
   border: none;
   min-height: 5.6rem;
@@ -1554,7 +1554,7 @@
 .faq p {
   font-size: 1.4rem;
   line-height: 1.5;
-  text-align: right!;
+  text-align: right !important;
   color: rgba(0, 0, 0, 0.87);
 }
 
@@ -1562,7 +1562,7 @@
   font-family: "Roboto", sans-serif;
   font-size: 1.6rem;
   line-height: 1.5;
-  text-align: right!;
+  text-align: right !important;
   color: rgba(0, 0, 0, 0.87);
 }
 #faqsContainer {
@@ -2592,7 +2592,7 @@ a:active {
   color: white;
   background-color: #00838f;
   border-radius: 5px;
-  margin: 10 0;
+  margin: 10px 0;
 }
 #myFamiliesShareHeaderContainer {
   z-index: 100;
@@ -2665,7 +2665,7 @@ a:active {
   max-height: 5rem;
 }
 #drawerMenuContainer i {
-  line-height: "";
+  line-height: 1;
   font-size: 2.5rem;
   opacity: 0.7;
   color: rgba(0, 0, 0, 0.5);
@@ -3279,6 +3279,26 @@ a:active {
 }
 
 .ReactTable .rt-table .rt-thead .rt-tr .rt-th {
-  height: 20;
+  height: 20px;
   padding: 0;
+}
+
+
+#root {
+	height: 100%;
+}
+
+:root {
+  --background-color: #F5F5F5;
+  --primary-color: #0a848f;
+  --accent-color: #8F0E58;
+  --error-color: #8a1515;
+}
+
+.App {
+	height: 100%;
+}
+
+.error-text {
+  color: var(--error-color);
 }

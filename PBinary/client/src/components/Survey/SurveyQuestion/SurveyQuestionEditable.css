@@ -1,0 +1,67 @@
+.survey-question {
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  border-right: 4px solid transparent;
+}
+
+.survey-question__form {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 6px;
+}
+
+.survey-question.survey-question--focused {
+  border-right-color: var(--primary-color);
+}
+
+.survey-question__answer-option {
+  display: grid;
+  grid-template-columns: 16px 1fr min-content;
+  align-items: center;
+  grid-column-gap: 8px;
+}
+
+.survey-question__answer-option.survey-question__answer-option--not-focused {
+  grid-template-columns: 16px 1fr;
+  align-items: center;
+}
+
+.survey-question__answer-option p {
+  margin: 0;
+}
+
+.survey-question__radio-circle,
+.survey-question__checkbox-square {
+  height: 16px;
+  width: 16px;
+  border: 1px solid #c4c4c4;
+}
+
+.survey-question__radio-circle {
+  border-radius: 100%;
+}
+
+.survey-question .MuiInput-underline:after {
+  border-bottom-color: var(--primary-color);
+}
+
+.survey-question .MuiRadio-colorSecondary.Mui-checked {
+  color: var(--primary-color);
+}
+
+.survey-question .MuiFormControlLabel-label {
+  font-size: 14px;
+}
+
+.survey-question__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.survey-question__empty i {
+  color: #8a1515;
+}

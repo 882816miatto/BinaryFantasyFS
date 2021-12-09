@@ -160,11 +160,15 @@ const SignUpScreen = Loadable({
 
 //Surveys
 const SurveyScreen = Loadable({
-  loader: () => import("./components/Survey/SurveyScreen"),
+  loader: () => import("./components/Survey/SurveyScreen/SurveyScreen"),
   loading: () => Loading
 });
 const CreateSurveyScreen = Loadable({
   loader: () => import("./components/Survey/CreateSurveyScreen"),
+  loading: () => Loading
+});
+const SurveysListScreen = Loadable({
+  loader: () => import("./components/Survey/SurveysListScreen/SurveysListScreen"),
   loading: () => Loading
 });
 
@@ -408,11 +412,16 @@ class App extends React.Component {
                 path="/groups/:groupId"
                 component={GroupMainScreen}
               />
-              
+
               <PrivateRoute
                 exact
                 path="/surveys/show-survey-by-id/:surveyId"
                 component={SurveyScreen}
+              />
+              <PrivateRoute
+                exact
+                path="/surveys"
+                component={SurveysListScreen}
               />
               {/*REVIEW */}
               <PrivateRoute

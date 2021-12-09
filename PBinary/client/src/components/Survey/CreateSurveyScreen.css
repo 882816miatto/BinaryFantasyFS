@@ -1,23 +1,50 @@
 .create-survey {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: flex-start;
+  background-color: var(--background-color);
+  min-height: 100%;
+}
+
+.create-survey__content {
+  padding: 10px;
+}
+
+.create-survey__content h1 {
+  margin-bottom: 20px;
 }
 
 .create-survey__questions {
-    width: 100%;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    display: grid;
-    grid-template-columns: 1fr;
-    padding: 10px;
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 10px;
+}
+
+.create-survey .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--primary-color);
+}
+
+.create-survey input {
+  background-color: #fff;
+  font-size: 14px;
+}
+
+.create-survey .MuiFormControl-root {
+  width: 100%;
+}
+
+.create-survey__add-question-btn {
+  margin-bottom: 60px;
 }
 
 .create-survey__footer {
-    position: fixed;
-    bottom: 0;
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    padding: 10px;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 10px;
+  right: 0;
+  background-color: var(--background-color);
+  border-top: 1px solid lightgrey;
 }

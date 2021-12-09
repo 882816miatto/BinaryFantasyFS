@@ -7,7 +7,7 @@
 }
 
 .cool-button.cool-button--primary {
-	background-color: #00838f;
+	background-color: var(--primary-color);
 	color: white;
 }
 
@@ -16,15 +16,29 @@
 	border: 1px solid #c4c4c4;
 }
 
-.cool-button.cool-button--error {
-	background-color: #ffffff;
-	border: 1px solid #8a1515;
-	color: #8a1515;
+.cool-button.cool-button--accent {
+  background-color: var(--accent-color);
+  color: white;
 }
 
+.cool-button.cool-button--error {
+	background-color: #ffffff;
+	border: 1px solid var(--error-color);
+	color: var(--error-color);
+}
 
 .cool-button.cool-button--icon {
 	padding: 6px;
 	height: 36px;
 	width: 36px;
+}
+
+.cool-button.cool-button--standard-icon i {
+  margin-right: 8px;
+}
+
+.cool-button.cool-button--disabled {
+  filter: grayscale(1);
+  pointer-events: none;
+  opacity: .6;
 }
