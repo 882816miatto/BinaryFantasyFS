@@ -78,6 +78,7 @@ app.use('/api/tests', require('./routes/test-routes'))
 app.use('/api/surveys', require('./routes/survey-routes'))
 app.use('/api/activities', require('./routes/activity-routes'))
 app.use('/api/answers', require('./routes/answer-routes'))
+app.use('/api/reviews', require('./routes/review-routes'))
 
 // End my update
 

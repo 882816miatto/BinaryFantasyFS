@@ -113,7 +113,7 @@ class SurveyScreen extends React.Component {
 
         }
 
-        AnswerDAO.insertOneAnswer(surveyAnswers);
+        AnswerDAO.insertAnswers(surveyAnswers);
     }
 
     getRadioValue = (questionId) => {

@@ -117,10 +117,7 @@ router.post('/insertReview', async (req, res) => {
 router.delete('/deleteTrial', (req, res) => {
 
     if (req.body) {
-
-        console.log(req.body);
         return res.status(200).send('Delete works properly');
-
     }
 
     else 
@@ -131,10 +128,7 @@ router.delete('/deleteTrial', (req, res) => {
 router.get('/getTrial', (req, res) => {
 
     if (req.query) {
-
-        console.log(req.query);
         return res.status(200).send('Get works properly');
-
     }
 
     else 
@@ -167,7 +161,7 @@ router.get('/show-surveys/:groupId/:userId', async (req, res) => {
 
     try {
 
-        let surveysData = await Survey.find({group_id: group_id});
+        let surveysData = await Survey.find({group_id: group_id, user_id: user_id});
         let answersData = await Answer.find({user_id: user_id});
         
         let idSurveySet = new Set(answersData.map(doc => doc.survey_id));
@@ -255,6 +249,7 @@ router.get('/delete-all', async (req, res) => {
     try { 
         await Survey.deleteMany({}); 
         await Answer.deleteMany({});
+        await Review.deleteMany({});
         return res.status(200).send('Deletion completed');
     }
 
@@ -336,5 +331,186 @@ router.post('/store', async (req, res) => {
     }
 
 });
+
+router.post('/store-answers', async (req, res) => {
+
+    if (!!!req.body || !!!req.body.answers) {
+        return res.status(400).send('Bad request');
+    }
+
+    let answers;
+
+    try { 
+
+        let survey = await Survey.findById(req.body.answers[0].survey_id);
+        let questions = survey.questions.map(doc => String(doc._id));
+        let idSet = new Set(questions);
+
+        answers = req.body.answers.map(doc => new AnswerDoc(doc));
+
+        for (const ans of answers) {
+
+            if (!idSet.has(ans.question_id)) {
+                return res.status(400).send('Bad request');
+            }
+
+            let question = survey.questions.filter(doc => String(doc._id) === ans.question_id);
+
+            if (question.length !== 1) {
+                return res.status(400).send('Bad request');
+            }
+            
+            let optionsSet = new Set(question[0].questionOptions);
+
+            for (const opt of ans.optionsSelected) {
+
+                if (!optionsSet.has(opt)) {
+                    return res.status(400).send('Bad request');
+                }
+                
+            }
+        
+        }
+    
+    } catch (e) { return res.status(400).send('Bad request'); }
+
+    try {
+
+        answers = answers.map(doc => doc.encodeForSaving());
+        await Answer.insertMany(answers);
+
+        let response = await Answer.find({survey_id: answers[0].survey_id, user_id: 'Simone Biondo'});
+        
+        if (response.length !== answers.length) {
+            return res.status(500).send('Something went wrong while inserting answers');
+        }
+
+        else 
+            return res.status(200).send('Answers insertion has been completed successfully');
+
+    } catch (e) { return res.status(500).send(e); }
+
+});
+
+router.get('/show-answers-by-survey-id/:surveyId', async (req, res) => {
+
+    const surveyId = req.params.surveyId;
+
+    try {
+
+        let survey = await Survey.findById(surveyId);
+
+        if (!!!survey)
+            return res.status(400).send('Bad request');
+
+        else {
+
+            let answers = await Answer.find({survey_id: surveyId});
+            let map = new Map();
+
+            survey.questions.forEach(doc => {
+
+                let ansMap = new Map();
+                doc.questionOptions.forEach(s => ansMap.set(s, 0));
+
+                map.set(String(doc._id), {
+                    title: doc.title,
+                    answers: ansMap
+                });
+
+            });
+
+            answers.forEach(ans => {
+
+                let ansDict = map.get(ans.question_id);
+                ans.optionsSelected.forEach(s => ansDict.answers.set(s, Number(ansDict.answers.get(s)) + 1));
+
+            });
+
+            /*
+
+            for (const v of map.values()) {
+                console.log('\n\n', v);
+            }
+
+            */
+
+            let results = [];
+
+            for (const v of map.values()) {
+
+                let sum = 0;
+
+                for (const prop of v.answers.keys()) {
+                    sum += v.answers.get(prop);
+                }
+                
+                // console.log('\n\n', sum);
+
+                let resultObj = {}
+
+                for (const prop of v.answers.keys()) {
+                    resultObj[prop] = Number(v.answers.get(prop)) / sum;
+                }
+
+
+                let result = {
+
+                    title: v.title,
+                    options: resultObj 
+
+                };
+
+                results.push(result);
+
+            }
+
+            // console.log('\n\n', results);
+
+            return res.status(200).send(results);
+
+        }
+
+    } catch (e) {
+
+        return res.status(500).send(e);
+
+    }
+
+});
+
+router.post('/store-review', async (req, res) => {
+
+    if (!req.body || !req.body.review) {
+        return res.status(400).send('Bad request');
+    }
+
+    let review;
+
+    try {
+        review = new ReviewDoc(req.body.review);
+    } catch (e) {
+        return res.status(400).send(e);
+    }
+
+    try {
+
+        let response = await Review.create(review.encodeForSaving());
+        return res.status(200).send('Review has been inserted successfully');
+
+    } catch( e) { return res.status(500).send(e); }
+
+});
+
+router.get('/get-from-req', async (req, res) => {
+
+    if (!req.user_id) {
+        return res.status(401).send('Not Authenticated');
+    }
+
+    else 
+        return res.status(200).send('OK');
+
+})
 
 module.exports = router

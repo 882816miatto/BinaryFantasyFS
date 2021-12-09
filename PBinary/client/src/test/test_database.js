@@ -40,7 +40,6 @@ function createReview(activity_id, user_id, user_email, evaluation) {
     return {
         activity_id: activity_id,
         user_id: user_id,
-        user_email: user_email,
         evaluation: evaluation
     };
 
@@ -79,10 +78,10 @@ async function test3() {
     try {
 
         await sendTo('/api/tests/survey', survey);
-        let surveyInserted = await sendTo('api/tests/getSurvey', {group_id: survey.group_id});
+        let surveyInserted = await sendTo('/api/tests/getSurvey', {group_id: survey.group_id});
         surveyInserted = surveyInserted.data;
 
-        await sendTo('api/tests/insertDeleteSurveyAndAnswer', {
+        await sendTo('/api/tests/insertDeleteSurveyAndAnswer', {
             data: [{
             optionsSelected: ['op1'],
             question_id: surveyInserted.questions[0]._id,
@@ -107,7 +106,7 @@ async function test4() {
 
     try {
 
-        await sendTo('api/tests/insertReview', review);
+        await sendTo('/api/tests/insertReview', review);
         console.log('Test 4 passed');
 
     } catch (e) { console.error('Test 4 not passed', e); }
@@ -117,7 +116,7 @@ async function test4() {
 async function test5() {
 
     try {
-        await axios.delete('api/tests/deleteTrial', {data: {s: 'Stringa_di_dati'} });
+        await axios.delete('/api/tests/deleteTrial', {data: {s: 'Stringa_di_dati'} });
         console.log('Test 5 passed');
     } catch (e) { console.error('Test 5 not passed', e); }
 
@@ -126,7 +125,7 @@ async function test5() {
 async function test6() {
 
     try {
-        await axios.get('api/tests/getTrial', {params: {answer: [42, 67]} });
+        await axios.get('/api/tests/getTrial', {params: {answer: [42, 67]} });
         console.log('Test 6 passed');
     } catch (e) { console.error('Test 6 not passed', e); }
 
@@ -221,11 +220,69 @@ async function createSurveysForTesting() {
 
     };
 
-    manySurveys.push(s1, s2, s3, s4);
+    const survey = {
+
+        status: true,
+        title: 'Survey Di prova per le risposte',
+        user_id: 'Simone Biondo',
+        email: 'simoneBiondo@gmail.com',
+        group_id: 'gId',
+
+        questions: [{
+            
+            title: 'Domanda 1',
+            typeOfQuestion: 'radio',
+
+            questionOptions: [
+                'pallone', 'bici',
+                'racchetta', 'spada'
+            ]}, {
+
+                title: 'Domanda 2',
+                typeOfQuestion: 'checkBox',
+    
+                questionOptions: [
+                    'Zio', 'Nonna',
+                    'Zia', 'Nonno'
+                ]
+        }]
+
+    };
+
+    const survey_ = {
+
+        status: true,
+        title: 'Survey Di prova per le risposte',
+        user_id: 'Simone Biondo_',
+        email: 'simoneBiondo@gmail.com',
+        group_id: 'gId',
+
+        questions: [{
+            
+            title: 'Domanda 1',
+            typeOfQuestion: 'radio',
+
+            questionOptions: [
+                'pallone', 'bici',
+                'racchetta', 'spada'
+            ]}, {
+
+                title: 'Domanda 2',
+                typeOfQuestion: 'checkBox',
+    
+                questionOptions: [
+                    'Zio', 'Nonna',
+                    'Zia', 'Nonno'
+                ]
+        }]
+
+    };
+
+    manySurveys.push(s1, s2, s3, s4, survey, survey_);
 
     try {
 
-        await axios.post('api/tests/create-surveys', {data: manySurveys});
+        await axios.post('/api/tests/create-surveys', {data: manySurveys});
         console.log("Test 7 passed");
 
     } catch (e) {
@@ -249,10 +306,7 @@ async function createAnswersForTesting() {
 
         const a1 = {
 
-            optionsSelected: [
-                'fontana', 'cervo',
-                'riccio', 'balena'
-            ],
+            optionsSelected: [ 'pallone', 'spada'],
 
             question_id: response.data.questions[0]._id,
             survey_id: id,
@@ -262,10 +316,7 @@ async function createAnswersForTesting() {
 
         const a2 = {
 
-            optionsSelected: [
-                'fontana', 'cervo',
-                'riccio', 'balena'
-            ],
+            optionsSelected: ['spada'],
 
             question_id: response.data.questions[0]._id,
             survey_id: id,
@@ -275,14 +326,93 @@ async function createAnswersForTesting() {
 
         const insertMany = [a1, a2];
 
-        console.log(insertMany);
-
         await axios.post('/api/tests/create-answers', insertMany);
         console.log('Test 11 passed');
  
-     } catch (e) {
-         console.error('Test 11 not passed', e);
-     }
+    } catch (e) {
+        console.error('Test 11 not passed', e);
+    }
+
+    try {
+
+        const groupId2 = 'gId';
+        const userId2 = 'Simone Biondo';
+
+        let response2 = await axios.get(`/api/tests/show-surveys/${groupId2}/${userId2}`);
+        const id2 = response2.data[0].id;
+        response2 = await axios.get(`/api/tests/show-survey-by-id/${id2}`);
+
+        const a101 = {
+
+            optionsSelected: ['pallone', 'bici'],
+
+            question_id: response2.data.questions[0]._id,
+            survey_id: id2,
+            user_id: 'Simone Biondo'
+
+        };
+
+        const a102 = {
+
+            optionsSelected: ['Zio', 'Zia'],
+
+            question_id: response2.data.questions[1]._id,
+            survey_id: id2,
+            user_id: 'Simone Biondo'
+
+        };
+
+        const insertManyAns = [a101, a102];
+
+        await axios.post('/api/tests/store-answers', {answers: insertManyAns});
+        console.log('Test 11.1 passed');
+
+    } catch (e) {
+
+        console.error('Test 11.1 not passed', e);
+
+    } 
+
+    try {
+
+        const groupId2 = 'gId';
+        const userId2 = 'Simone Biondo_';
+
+        let response2 = await axios.get(`/api/tests/show-surveys/${groupId2}/${userId2}`);
+        const id2 = response2.data[0].id;
+
+        response2 = await axios.get(`/api/tests/show-survey-by-id/${id2}`);
+
+        const a101 = {
+
+            optionsSelected: ['pallone_', 'bici'],
+
+            question_id: response2.data.questions[0]._id,
+            survey_id: id2,
+            user_id: 'Simone Biondo'
+
+        };
+
+        const a102 = {
+
+            optionsSelected: ['Zio', 'Zia'],
+
+            question_id: response2.data.questions[1]._id,
+            survey_id: id2,
+            user_id: 'Simone Biondo'
+
+        };
+
+        const insertManyAns = [a101, a102];
+
+        await axios.post('/api/tests/store-answers', {answers: insertManyAns});
+        console.error('Test 11.2 not passed');
+
+    } catch (e) {
+
+        console.log('Test 11.2 passed for Bad Request', e);
+
+    } 
 
 }
 
@@ -382,7 +512,7 @@ async function store() {
         status: true,
         title: 'Un sondaggio di prova',
         user_id: 'John Benson',
-        email: 'email#stud.unive.it',
+        email: 'email@stud.unive.it',
         group_id: 'gId',
 
         questions: [{
@@ -422,6 +552,52 @@ async function store() {
 
 }
 
+async function showResults() {
+
+    const groupId = 'gId';
+    const userId = 'simone';
+
+    try {
+
+        let response = await axios.get(`/api/tests/show-surveys/${groupId}/${userId}`);
+        const id = response.data[0].id;
+        response = await axios.get(`/api/tests/show-survey-by-id/${id}`);
+
+        let res = await axios.get(`/api/tests/show-answers-by-survey-id/${id}`);
+        console.log(res.data)
+ 
+    } catch (e) {
+        console.error('An error occurred', e);
+    }
+
+}
+
+async function storeReview() {
+
+    let review = {
+        activity_id: 'activityId',
+        user_id: 'userId',
+        evaluation: 4,
+        comment: 'Questo è un commento di prova'
+    };
+
+    try {
+        let response = await axios.post('/api/tests/store-review', {review: review});
+        console.log('Test store review passed', response.data);
+
+    } catch (e) { console.error('Test store review not passed', e); }
+
+}
+
+async function getFromReq() {
+
+    try {
+        let response = await axios.get('/api/tests/get-from-req')
+        console.log(response.data);
+    } catch (e) { console.error(e); }
+
+}
+
 async function handleTest() {
 
     try {
@@ -438,8 +614,11 @@ async function handleTest() {
         await showSurveys();
         await showSurveysForUser();
         await createAnswersForTesting()
+        await showResults();
         await deleteSurvey()
         await store();
+        await storeReview();
+        await getFromReq();
 
         await deleteAll();
 

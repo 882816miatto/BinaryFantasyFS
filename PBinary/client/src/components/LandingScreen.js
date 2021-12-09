@@ -9,7 +9,6 @@ import CardWithLink from "./CardWithLink";
 import withLanguage from "./LanguageContext";
 import Log from "./Log";
 
-import handleTest from "../test/test_database"
 class LandingScreen extends React.Component {
   state = { fetchedSuggestions: false, suggestions: [], error: false };
 
@@ -48,10 +47,6 @@ class LandingScreen extends React.Component {
           {texts.suggestionsHeader}
         </h1>
         {fetchedSuggestions && !error && <GroupList groupIds={suggestions} />}
-        <button 
-        onClick={handleTest}
-        type='button'
-        className='findOutMore'>RUN TEST</button>
       </div>
     );
   }

@@ -11,6 +11,8 @@ import Texts from "../Constants/Texts";
 import Log from "./Log";
 import Images from "../Constants/Images";
 
+import handleTest from "../test/test_database"
+
 const getMyGroups = userId => {
   return axios
     .get(`/api/users/${userId}/groups`)
@@ -197,6 +199,10 @@ class MyFamiliesShareScreen extends React.Component {
             </div>
           )}
         </div>
+        <button 
+        onClick={handleTest}
+        type='button'
+        className='findOutMore'>RUN TEST</button>
       </React.Fragment>
     );
   }
