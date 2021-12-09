@@ -100,7 +100,7 @@ router.post('/store', async (req, res) => {
         return res.status(401).send('Not authenticated'); 
     }
 
-    if (!!!req.body || req.body.answers) {
+    if (!!!req.body || !!!req.body.answers) {
         return res.status(400).send('Bad request');
     }
 
@@ -113,11 +113,21 @@ router.post('/store', async (req, res) => {
 
     try { 
 
-        let survey = await Survey.findById(req.body.answers[0].survey_id);
-        let questions = survey.questions.map(doc => String(doc._id));
-        let idSet = new Set(questions);
+        const question_id = req.body.answers[0].question_id;
+        const checkSurvey = await Survey.findOne({'questions._id': question_id});
 
-        answers = req.body.answers.map(doc => new AnswerDoc(doc));
+        const survey = await Survey.findById(checkSurvey.id);
+        const questions = survey.questions.map(doc => String(doc._id));
+        const idSet = new Set(questions);
+
+        answers = req.body.answers.map(a => {
+
+            a['survey_id'] = checkSurvey.id;
+            a['user_id'] = req.user_id;
+
+            return new AnswerDoc(a);
+
+        });
 
         for (const ans of answers) {
 

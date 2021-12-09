@@ -88,6 +88,35 @@ router.get('/show-survey-by-id/:id', async (req, res) => {
         if (!survey) 
             return res.status(500).send('Invalid id');
 
+        let parsedQuestions = survey.questions.map(q => {
+
+            let idOption = 0;
+
+            let parsedOptions = q.questionOptions.map(o => {
+
+                let option = {
+                    id: idOption,
+                    value: o
+                };
+
+                idOption += 1;
+
+                return option;
+
+            });
+
+            return {
+
+                id: String(q._id),
+                title: q.title,
+                typeOfQuestion: q.typeOfQuestion,
+
+                questionOptions: parsedOptions,
+
+            }
+
+        })
+
         let surveyObj = {
 
             id: survey.id,
@@ -96,7 +125,7 @@ router.get('/show-survey-by-id/:id', async (req, res) => {
             title: survey.title,
             email: survey.email,
 
-            questions: survey.questions
+            questions: parsedQuestions
 
         }
 
