@@ -88,6 +88,11 @@ const announcementUpload = multer({
   limits: { fieldSize: 52428800 }
 })
 
+const round = (number, decimalPlace) => {
+  const factorOfTen = Math.pow(10, decimalPlace);
+  return Math.round(number * factorOfTen) / factorOfTen;
+}
+
 const Image = require('../models/image')
 const Reply = require('../models/reply')
 const Group_Settings = require('../models/group-settings')
@@ -106,6 +111,7 @@ const User = require('../models/user')
 // Start Updating
 const Survey = require('../models/survey');
 const Answer = require('../models/answer');
+const Review = require('../models/review');
 // End Updating
 
 
@@ -1186,15 +1192,30 @@ router.get('/:id/activities', (req, res, next) => {
         .sort({ createdAt: -1 })
         .lean()
         .exec()
-        .then(activities => {
+        .then(async activities => {
           if (activities.length === 0) {
             return res.status(404).send('Group has no activities')
           }
 
           // Add avgReviews in order to visulize it
+          
           for (const act of activities) {
-            act.avgReviews = -1;
+
+            let reviews = await Review.find({activity_id: String(act._id)}, {evaluation: 1});
+
+            let cnt = 0;
+            let sum = 0;
+
+            reviews.forEach(doc => {
+
+              cnt += 1;
+              sum += doc.evaluation;
+
+            });
+
+            act.avgReviews = cnt !== 0 ? round(sum / cnt, 1) : -1;
             console.log(act);
+            
           }
           
           res.json(activities)
@@ -1209,6 +1230,8 @@ New route for Progetto Ingegneria del software 2021-22 Unive
 GetSurveyByGroupId
 
 Given a groupId return a list of surveys that have not been answsered by the current user yet
+
+TODO DELETE THIS ROUTE HERE
 
 */
 
@@ -1315,6 +1338,11 @@ router.delete('/:groupId/activities/:activityId', async (req, res, next) => {
     }, Promise.resolve())
     const activity = await Activity.findOneAndDelete({ activity_id })
     await nh.deleteActivityNotification(user_id, activity.name, activityTimeslots)
+
+    // Deleting reviews associated with this activity
+
+    await Review.deleteMany({activity_id: activity_id});
+
     res.status(200).send('Activity Deleted')
   } catch (error) {
     next(error)

@@ -79,6 +79,12 @@ const Device = require('../models/device')
 const Rating = require('../models/rating')
 const Community = require('../models/community')
 
+// Add models
+
+const Survey = require('../models/survey')
+const Review = require('../models/review')
+const Answer = require('../models/answer')
+
 router.post('/', async (req, res, next) => {
   const {
     given_name, family_name, number, email, password, visible, language, deviceToken
@@ -505,6 +511,13 @@ router.delete('/:id', async (req, res, next) => {
       }))
     }))
     await Member.deleteMany({ user_id })
+
+    // Delete Surveys, Answers and Reviews for this user
+
+    await Survey.deleteMany({user_id: user_id});
+    await Review.deleteMany({user_id: user_id});
+    await Answer.deleteMany({user_id: user_id});
+
     res.status(200).send('account deleted')
   } catch (error) {
     next(error)

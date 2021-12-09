@@ -30,13 +30,12 @@ module.exports = class SurveyDoc {
         if (!!!doc)
             throw new Error('Cannot create an undefined survey');
 
-        if (!!!doc.status || !!!doc.title || !!!doc.user_id || !!!doc.email || !!!doc.group_id ||
+        if (!!!doc.status || !!!doc.title || !!!doc.user_id || !!!doc.group_id ||
             doc.questions.length === 0) throw new Error('Missing some values for this survey');
 
         this.status = doc.status,
         this.title = doc.title;
         this.user_id = doc.user_id;
-        this.email = doc.email;
         this.group_id = doc.group_id;
 
         this.questions = doc.questions.map(v => new QuestionDoc(v));

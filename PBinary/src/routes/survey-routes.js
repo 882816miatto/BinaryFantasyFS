@@ -7,14 +7,13 @@ const Answer = require('../models/answer')
 const SurveyDoc = require('../docsHelper/surveyDoc');
 
 // TODO check user_id === req.user_id
+// TODO check findMember like routes in group-routes
 
 router.post('/store', async (req, res) => {
 
     if (!req.user_id) { 
         return res.status(401).send('Not authenticated'); 
     }
-
-    // TODO check findMember like routes in group-routes
 
     let surveyDoc;
 
@@ -40,7 +39,6 @@ router.post('/store', async (req, res) => {
 
 });
 
-
 // Deleteing a survey implies the deletion of all answers associated with it
 
 router.delete('/delete', async (req, res) => {
@@ -48,8 +46,6 @@ router.delete('/delete', async (req, res) => {
     if (!req.user_id) { 
         return res.status(401).send('Not authenticated'); 
     }
-
-    // TODO check findMember like routes in group-routes
 
     if (!req.body || !req.body.surveyId){
         return res.status(400).send('Bad request');
@@ -82,8 +78,6 @@ router.get('/show-survey-by-id/:id', async (req, res) => {
     if (!req.user_id) { 
         return res.status(401).send('Not authenticated');
     }
-
-    // TODO check findMember like routes in group-routes
 
     const id = req.params.id;
 
@@ -123,8 +117,6 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
         return res.status(401).send('Not authenticated');
     }
 
-    // TODO check findMember like routes in group-routes
-
     const userId = req.userId;
 
     try {
@@ -153,7 +145,7 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
 
 });
 
-//REVIEW
+/*
 router.get('/review', async (req, res) => {
 	let reviews = [
 		{
@@ -196,7 +188,9 @@ router.get('/review', async (req, res) => {
 	];
 
 	return res.status(200).send(reviews);
-})
+});
+*/
+
 // TODO: change in DAO with this route
 router.get('/:groupId/show-surveys-by-group-id', async (req, res) => {
 

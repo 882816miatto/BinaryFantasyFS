@@ -598,6 +598,22 @@ async function getFromReq() {
 
 }
 
+async function storeReviewUser() {
+
+    let review = {
+        activity_id: 'activityId',
+        evaluation: 4,
+        comment: 'Questo è un commento di prova'
+    };
+
+    try {
+        let response = await axios.post('/api/tests/store-review-with-user', {review: review});
+        console.log('Test store review passed', response.data);
+
+    } catch (e) { console.error('Test store review not passed', e); }
+
+}
+
 async function handleTest() {
 
     try {
@@ -619,6 +635,7 @@ async function handleTest() {
         await store();
         await storeReview();
         await getFromReq();
+        await storeReviewUser();
 
         await deleteAll();
 

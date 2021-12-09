@@ -21,6 +21,7 @@
     "colors": "^1.4.0",
     "compression": "^1.7.4",
     "config": "^3.3.1",
+    "dayjs": "^1.10.7",
     "debug": "~2.6.9",
     "dotenv": "^6.2.0",
     "exceljs": "^1.9.1",

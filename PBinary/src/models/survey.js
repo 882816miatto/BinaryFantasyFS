@@ -36,11 +36,6 @@ const surveySchema = new mongoose.Schema({
     required: true
   },
 
-  email: {
-    type: String,
-    required: true
-  },
-
   group_id: {
     type: String,
     required: true

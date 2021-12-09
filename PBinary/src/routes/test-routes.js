@@ -1,9 +1,12 @@
 const express = require('express')
 const router = new express.Router()
 
-const Survey = require('../models/survey')
+const Survey = require('../models/survey');
 const Answer = require('../models/answer');
-const Review = require('../models/review')
+const Review = require('../models/review');
+const Profile = require('../models/profile');
+const User = require('../models/user');
+const Image = require('../models/image');
 
 const SurveyDoc = require('../docsHelper/surveyDoc');
 const AnswerDoc = require('../docsHelper/answerDoc');
@@ -100,7 +103,11 @@ router.post('/insertReview', async (req, res) => {
 
     try {
         const review = new ReviewDoc(req.body);
-        await Review.create(review.encodeForSaving());
+        let toInsert = review.encodeForSaving();
+        toInsert.given_name = 'Given name';
+        toInsert.user_role = 'user_role';
+        toInsert.user_image = 'user_image';
+        await Review.create(toInsert);
         const doc = await Review.findOne(review);
         const cnt = await Review.deleteOne(doc.toObject());
 
@@ -495,7 +502,12 @@ router.post('/store-review', async (req, res) => {
 
     try {
 
-        let response = await Review.create(review.encodeForSaving());
+        let rew = review.encodeForSaving();
+        rew['given_name'] = 'prova';
+        rew['user_role'] = 'user_role';
+        rew['user_image'] = 'user_image';
+
+        await Review.create(rew);
         return res.status(200).send('Review has been inserted successfully');
 
     } catch( e) { return res.status(500).send(e); }
@@ -512,5 +524,52 @@ router.get('/get-from-req', async (req, res) => {
         return res.status(200).send('OK');
 
 })
+
+router.post('/store-review-with-user', async (req, res) => {
+
+    if (!req.user_id) { 
+        return res.status(401).send('Not authenticated'); 
+    }
+
+    if (!req.body || !req.body.review) {
+        return res.status(400).send('Bad request');
+    }
+
+    const currentReview = req.body.review;
+    currentReview.user_id = req.user_id;
+
+    let review;
+
+    try {
+
+        review = new ReviewDoc(currentReview);
+
+        if (review.user_id !== req.user_id) {
+            return res.status(400).send('Bad request')
+        }
+
+    } catch (e) { return res.status(400).send(e); }
+
+    try {
+
+        let responseProfile = await Profile.findOne({user_id: review.user_id});
+        let responseUser = await User.findOne({user_id: review.user_id});
+        let responseImage = await Image.findOne({image_id: responseProfile.image_id});
+
+        let proj = await User.findOne({user_id: review.user_id}, {user_id: 1});
+        console.log(proj)
+
+        const reviewToInsert = review.encodeForSaving();
+        reviewToInsert['given_name'] = String(responseProfile.given_name + ' ' + String(responseProfile.family_name));
+        reviewToInsert['user_role'] = responseUser.role;
+        reviewToInsert['user_image'] = responseImage.path;
+
+        await Review.create(reviewToInsert);
+
+        return res.status(200).send('Review has been inserted successfully');
+
+    } catch( e) { return res.status(500).send(e); }
+
+});
 
 module.exports = router
