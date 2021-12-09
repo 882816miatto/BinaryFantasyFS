@@ -18,6 +18,7 @@ import AnswerDAO from "../../DAOs/answerDAO";
 import Divider from '@material-ui/core/Divider';
 import SaveIcon from '@material-ui/icons/Save';
 import Button from '@material-ui/core/Button';
+import SurveyQuestion from "./SurveyQuestion";
 import Log from "../Log";
 
 class SurveyScreen extends React.Component {

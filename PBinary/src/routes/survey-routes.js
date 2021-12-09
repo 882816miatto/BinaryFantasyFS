@@ -80,37 +80,7 @@ router.delete('/delete', async (req, res) => {
 });
 
 router.get('/show-survey-by-id/:id', async (req, res) => {
-    let surveyObj = {
-        id: 'abc1',
-        status: true,
-        title: 'Un sondaggio di prova',
-        email: 'email@stud.unive.it',
-        questions: [{
-            id: '1',
-            title: 'Domanda di prova 1',
-            typeOfQuestion: 'radio',
-            questionOptions: [ 
-                {id:"1", value:'pallone'},
-                {id:"2", value:'bici'},
-                {id:"3", value:'racchetta'},
-                {id:"4", value:'spada'},
-            ],
-            questionAnswers: null
-        }, {
-            id: '2',
-            title: 'Domanda di prova 2',
-            typeOfQuestion: 'checkBox',
-            questionOptions: [
-                {id:"1", value:'Enrico'},
-                {id:"2", value:'Simone'},
-                {id:"3", value:'Marika'},
-                {id:"4", value:'Alessandro'},
-            ],
-            questionAnswers: null
-        }]
-    }
-    return res.status(200).send(surveyObj);
-    
+        
     if (!req.user_id) { 
         return res.status(401).send('Not authenticated');
     }
@@ -184,5 +154,50 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
     }
 
 });
+
+//REVIEW
+router.get('/review', async (req, res) => {
+	let reviews = [
+		{
+			id: 1,
+			activity_id: 1,
+			user_id: 2,
+			user: {
+				name: 'John',
+				surname: 'Doe',
+				avatar: 'https://place-puppy.com/300x300',
+				role: 'parent'
+			},
+			evaluation: 3,
+			created_at: '2021-12-01',
+			comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit semper lorem sit amet ornare. Aenean non pretium odio. Morbi arcu turpis, iaculis in scelerisque eu, luctus sed turpis. Nam faucibus euismod massa, porta pulvinar quam eleifend sed. Maecenas tincidunt metus eget porttitor pharetra.',
+		},
+		{
+			id: 2,
+			activity_id: 1,
+			user_id: 1,
+			user: {
+				name: 'Jane',
+				surname: 'Doe',
+				avatar: 'https://place-puppy.com/150x150',
+				role: 'organizer'
+			},
+			evaluation: 4,
+			created_at: '2021-10-10',
+			images: [
+					'https://place-puppy.com/160x150',
+					'https://place-puppy.com/160x150',
+					'https://place-puppy.com/160x150',
+					'https://place-puppy.com/160x150',
+					'https://place-puppy.com/160x150',
+					'https://place-puppy.com/160x150',
+					'https://place-puppy.com/160x150',
+			],
+			comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit semper lorem sit amet ornare. Aenean non pretium odio. Morbi arcu turpis, iaculis in scelerisque eu, luctus sed turpis. Nam faucibus euismod massa, porta pulvinar quam eleifend sed. Maecenas tincidunt metus eget porttitor pharetra.',
+		},
+	];
+
+	return res.status(200).send(reviews);
+})
 
 module.exports = router;

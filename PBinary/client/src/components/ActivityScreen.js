@@ -397,6 +397,11 @@ class ActivityScreen extends React.Component {
       });
   };
 
+  goToReviews = () => {
+    const { history } = this.props;
+    history.push("/review");
+  };
+
   render() {
     const { history, language, classes } = this.props;
     const {
@@ -459,8 +464,21 @@ class ActivityScreen extends React.Component {
                 <i className="fas fa-arrow-left" />
               </button>
             </div>
-            <div className="col-6-10">
+            <div className="col-5-10">
               <h1 className="center">{activity.name}</h1>
+            </div>
+            <div className="col-1-10">
+              {userCanEdit ? (
+                <button
+                  type="button"
+                  className="transparentButton center"
+                  onClick={this.goToReviews}
+                >
+                  <i className="fas fa-star" />
+                </button>
+              ) : (
+                <div />
+              )}
             </div>
             <div className="col-1-10">
               {userCanEdit ? (

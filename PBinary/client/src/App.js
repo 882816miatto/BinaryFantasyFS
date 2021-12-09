@@ -163,6 +163,16 @@ const SurveyScreen = Loadable({
   loader: () => import("./components/Survey/SurveyScreen"),
   loading: () => Loading
 });
+const CreateSurveyScreen = Loadable({
+  loader: () => import("./components/Survey/CreateSurveyScreen"),
+  loading: () => Loading
+});
+
+// Reviews
+const ReviewsListScreen = Loadable({
+	loader: () => import("./components/Review/ReviewsList/ReviewsList"),
+	loading: () => Loading,
+});
 
 axios.interceptors.request.use(
   config => {
@@ -326,6 +336,11 @@ class App extends React.Component {
               />
               <PrivateRoute
                 exact
+                path="/groups/:groupId/surveys/create"
+                component={CreateSurveyScreen}
+              />
+              <PrivateRoute
+                exact
                 path="/groups/:groupId/plans/:planId/edit"
                 component={EditPlanScreen}
               />
@@ -393,12 +408,18 @@ class App extends React.Component {
                 path="/groups/:groupId"
                 component={GroupMainScreen}
               />
-
+              
               <PrivateRoute
                 exact
                 path="/surveys/show-survey-by-id/:surveyId"
                 component={SurveyScreen}
               />
+              {/*REVIEW */}
+              <PrivateRoute
+			            exact
+			            path="/review"
+			            component={ReviewsListScreen}
+	            />
 
               <Route component={NoMatchScreen} />
             </Switch>

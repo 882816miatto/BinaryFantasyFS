@@ -1,0 +1,73 @@
+.review-create {
+	background-color: #F5F5F5;
+	height: 100%;
+}
+
+.review-create__header-container {
+	font-size: 2rem;
+	background-color: #00838f;
+	height: 5.6rem;
+	color: #ffffff;
+	position: fixed;
+	z-index: 1000;
+	top: 0;
+	width: 100%;
+}
+
+.review-create__header-container button {
+	width: 5rem;
+	height: 5rem;
+}
+
+.review-create__header-container h1 {
+	font-size: 2rem;
+	color: #ffffff;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.review-create__content {
+	padding: 70px 10px 10px;
+}
+
+.review-create__content h1 {
+	margin-bottom: 20px;
+}
+
+.review-create .MuiTextField-root {
+	width: 100%;
+	background: white;
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+.review-create .MuiOutlinedInput-inputMultiline {
+	font-size: 14px;
+	line-height: 1.3;
+}
+
+.MuiOutlinedInput-notchedOutline {
+	border-color: #c4c4c4;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+	border-color: #0a848f;
+}
+
+.review-create__footer {
+	padding: 10px;
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	position: fixed;
+	bottom: 0;
+}
+
+.review-create__footer .review-create__footer-right {
+	 display: flex;
+	 align-items: center;
+	 gap: 8px;
+ }

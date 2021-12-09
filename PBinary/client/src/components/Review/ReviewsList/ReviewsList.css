@@ -1,0 +1,92 @@
+#root {
+	height: 100%;
+}
+
+.App {
+	height: 100%;
+}
+
+h1, h2, h3, h4, p, a {
+	margin: 0;
+}
+
+.reviews {
+	background-color: #F5F5F5;
+	min-height: 100%;
+}
+
+.reviews__header-container {
+	font-size: 2rem;
+	background-color: #00838f;
+	height: 5.6rem;
+	color: #ffffff;
+	position: fixed;
+	z-index: 1000;
+	top: 0;
+	width: 100%;
+}
+
+.reviews__header-container button {
+	width: 5rem;
+	height: 5rem;
+}
+
+.reviews__header-container h1 {
+	font-size: 2rem;
+	color: #ffffff;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.reviews__content {
+	padding: 70px 10px 30px;
+
+}
+
+.reviews__title {
+	margin-bottom: 10px;
+}
+
+.reviews__avg {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 20px;
+}
+.reviews__avg p {
+	margin-top: 4px;
+}
+
+.reviews__sort {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.reviews__sort p{
+	margin-right: 4px;
+}
+
+.reviews__sort__button {
+	border-radius: 8px;
+	padding: 6px 14px;
+	cursor: pointer;
+	background-color: white;
+}
+
+.reviews__sort__button.reviews__sort__button--active {
+	background-color: #00838f;
+	color: white;
+}
+
+.reviews__list {
+	margin-top: 18px;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-row-gap: 10px;
+
+}
+
+.reviews__empty-state {
+}

@@ -1,0 +1,28 @@
+.review-dots {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.review-dots.review-dots--selectable .review-dot {
+	cursor: pointer;
+	height: 24px;
+	width: 24px;
+}
+
+.review-dot {
+	border-radius: 50%;
+	height: 16px;
+	width: 16px;
+	background-color: #C4C4C4;
+}
+
+.review-dot.review-dot--active {
+	background-color: #00838f;
+}
+
+
+.review-dot.review-dot--selectable {
+	background-color: #ffffff;
+	border: 1px solid #c4c4c4;
+}
