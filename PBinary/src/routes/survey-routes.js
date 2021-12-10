@@ -3,6 +3,8 @@ const router = new express.Router()
 
 const Survey = require('../models/survey')
 const Answer = require('../models/answer')
+const Group = require('../models/group')
+const Member = require('../models/member')
 
 const SurveyDoc = require('../docsHelper/surveyDoc');
 
@@ -39,7 +41,7 @@ router.post('/store', async (req, res) => {
 
 });
 
-// Deleteing a survey implies the deletion of all answers associated with it
+// Deleting a survey implies the deletion of all answers associated with it
 
 router.delete('/delete', async (req, res) => {
 
@@ -150,25 +152,52 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
 
     try {
 
-        let surveysData = await Survey.find({user_id: userId});
+        const groups = [];
 
-        //TODO
-        //prendi la lista dei gruppi ai quali fa parte l'utente loggato e dentro ogni gruppo devono esserci i relativi sondaggi
-        //per il grupppo basta l'id ed il nome, per i sondaggi id e titolo come li estrapoli gia vanno bene
-        //devi anche filtrare i gruppi di modo da prendere solo quelli con sondaggi
+        const inGroups = await Member.find({
+            user_id: userId,
+            group_accepted: true,
+            user_accepted: true
+        }, {group_id: 1});
 
-        if (surveysData.length > 0) {
-            surveysData = surveysData.map(doc => {
-                return {
-                    id: doc.id,
-                    title: doc.title
-                    //altrimenti ritorna qui un oggetto group : { id e nome del gruppo }
-                }
+        for (const gr of inGroups) {
+            
+            const groupName = await Group.findOne({group_id: gr.group_id}, {group_id: 1, name: 1});
+
+            groups.push({
+                id: groupName.group_id,
+                name: groupName.name
             });
+
         }
 
-        else 
-            surveysData = []
+        const surveysByGroup = [];
+
+        for (const group of groups) {
+
+            let surveysGroupUser = await Survey.find({user_id: userId, group_id: group.id}, {title: 1});
+
+            if (surveysGroupUser.length > 0) {
+
+                surveysGroupUser = surveysGroupUser.map(doc => {
+                    return {
+                        id: doc.id,
+                        title: doc.title
+                    }
+                });
+
+                surveysByGroup.push({
+
+                    group_id: group.id,
+                    group_name: group.name,
+
+                    survyes: surveysGroupUser
+
+                });
+
+            }
+
+        }
 
         return res.status(200).send(surveysData);
 
@@ -226,7 +255,6 @@ router.get('/review', async (req, res) => {
 });
 */
 
-// TODO: change in DAO with this route
 router.get('/:groupId/show-surveys-by-group-id', async (req, res) => {
 
     if (!req.user_id) {

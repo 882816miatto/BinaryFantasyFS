@@ -7,6 +7,8 @@ const Review = require('../models/review');
 const Profile = require('../models/profile');
 const User = require('../models/user');
 const Image = require('../models/image');
+const Member = require('../models/member')
+const Group = require('../models/group')
 
 const SurveyDoc = require('../docsHelper/surveyDoc');
 const AnswerDoc = require('../docsHelper/answerDoc');
@@ -194,6 +196,11 @@ router.get('/show-surveys-by-user-id/:id', async (req, res) => {
     try {
 
         let surveysData = await Survey.find({user_id: userId});
+
+        //  TODO
+        //  prendi la lista dei gruppi ai quali fa parte l'utente loggato e dentro ogni gruppo devono esserci i relativi sondaggi
+        //  per il grupppo basta l'id ed il nome, per i sondaggi id e titolo come li estrapoli gia vanno bene
+        //  devi anche filtrare i gruppi di modo da prendere solo quelli con sondaggi
 
         if (surveysData.length > 0) {
             surveysData = surveysData.map(doc => {
@@ -569,6 +576,37 @@ router.post('/store-review-with-user', async (req, res) => {
         return res.status(200).send('Review has been inserted successfully');
 
     } catch( e) { return res.status(500).send(e); }
+
+});
+
+router.get('/get-group-id-and-name-for-user', async (req, res) => {
+
+    try {
+
+        const user_id = req.user_id;
+
+        let groups = [];
+
+        let inGroups = await Member.find({
+            user_id: user_id,
+            group_accepted: true,
+            user_accepted: true
+        }, {group_id: 1});
+
+        for (const gr of inGroups) {
+            
+            let groupName = await Group.findOne({group_id: gr.group_id}, {group_id: 1, name: 1});
+
+            groups.push({
+                id: groupName.group_id,
+                name: groupName.name
+            });
+
+        }
+
+        return res.status(200).send('id');
+
+    } catch (e) { return res.status(500).send(e); }
 
 });
 

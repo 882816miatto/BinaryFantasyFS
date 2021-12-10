@@ -598,6 +598,18 @@ async function getFromReq() {
 
 }
 
+async function testMember() {
+
+    try {
+        let response = await axios.get('/api/tests/get-group-id-and-name-for-user');
+        console.log(response.data);
+
+    } catch (e) {
+        console.error(e);
+    }
+
+}
+
 async function handleTest() {
 
     try {
@@ -619,6 +631,7 @@ async function handleTest() {
         await store();
         await storeReview();
         await getFromReq();
+        await testMember();
 
         await deleteAll();
 
