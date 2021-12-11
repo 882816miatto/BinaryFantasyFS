@@ -22,27 +22,35 @@ router.get('/get-reviews/:activityId', async (req, res) => {
 
         const reviews = await Review.find({activity_id: activityId});
 
-        const mappedReviews = reviews.map(review => {
+        const mappedReviews = [];
 
-            return {
+        for (const rev of reviews) {
 
-                id: review.id,
-                activity_id: review.activity_id,
-                user_id: review.user_id,
+            const responseProfile = await Profile.findOne({user_id: rev.user_id});
+            const responseUser = await User.findOne({user_id: rev.user_id});
+            const responseImage = await Image.findOne({image_id: responseProfile.image_id});
+
+            const r = {
+
+                id: rev.id,
+                activity_id: rev.activity_id,
+                user_id: rev.user_id,
 
                 user: {
-                    given_name: review.given_name,
-                    avatar: review.user_image, 
-                    role: review.user_role
+                    given_name: String(responseProfile.given_name + ' ' + String(responseProfile.family_name)),
+                    avatar: responseImage.path, 
+                    role: responseUser.role,
                 },
 
-                evaluation: review.evaluation,
-                comment: review.comment ? review.comment : '',
-                created_at: review.createdAt
+                evaluation: rev.evaluation,
+                comment: rev.comment ? rev.comment : '',
+                created_at: rev.createdAt
 
-            }
+            };
 
-        });
+            mappedReviews.push(r);
+            
+        }
 
         return res.status(200).send(mappedReviews);
 
@@ -74,14 +82,7 @@ router.post('/store', async (req, res) => {
 
     try {
 
-        let responseProfile = await Profile.findOne({user_id: review.user_id});
-        let responseUser = await User.findOne({user_id: review.user_id});
-        let responseImage = await Image.findOne({image_id: responseProfile.image_id});
-
         const reviewToInsert = review.encodeForSaving();
-        reviewToInsert['given_name'] = String(responseProfile.given_name + ' ' + String(responseProfile.family_name));
-        reviewToInsert['user_role'] = responseUser.role;
-        reviewToInsert['user_image'] = responseImage.path;
 
         await Review.findOneAndUpdate({activity_id: review.activity_id, user_id: review.user_id}, reviewToInsert, {upsert: true});
 
