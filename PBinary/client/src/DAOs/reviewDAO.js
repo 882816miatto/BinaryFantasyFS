@@ -6,4 +6,6 @@ export default class ReviewDAO {
 
     static insertOneReview(review) { return axios.post('/api/reviews/store', {review: review}); }
 
+    static deleteReview(reviewId) { return axios.delete('/api/reviews/delete', {data: {reviewId: reviewId} }); }
+
 }
