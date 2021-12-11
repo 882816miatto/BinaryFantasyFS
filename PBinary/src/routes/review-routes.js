@@ -21,7 +21,6 @@ router.get('/get-reviews/:activityId', async (req, res) => {
     try {
 
         const reviews = await Review.find({activity_id: activityId});
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
         const mappedReviews = reviews.map(review => {
 
