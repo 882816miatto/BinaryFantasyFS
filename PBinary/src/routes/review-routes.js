@@ -39,7 +39,7 @@ router.get('/get-reviews/:activityId', async (req, res) => {
 
                 evaluation: review.evaluation,
                 comment: review.comment ? review.comment : '',
-                created_at: review.createdAt.toLocaleDateString(undefined, options)
+                created_at: review.createdAt
 
             }
 
