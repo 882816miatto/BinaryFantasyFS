@@ -103,6 +103,7 @@ class SurveyQuestion extends React.Component {
 
     render() {
         const { focused, question, editable } = this.state;
+        const texts = Texts[language].surveyQuestion;
         return(
             <>
             {/*<OutsideAlerter onOutsideClick={e => this.onLostFocus(e) }>*/}
@@ -114,7 +115,7 @@ class SurveyQuestion extends React.Component {
                                     required
                                     onChange={(e) => this.onQuestionFieldChange(e.target.value, 'title')}
                                     id="survey-title-field"
-                                    label="Titolo domanda"
+                                    label={texts.questionTitle}
                                     defaultValue={question.title}
                                     variant="standard"/>
                                 <FormControl component="fieldset">
@@ -123,8 +124,8 @@ class SurveyQuestion extends React.Component {
                                         name="controlled-radio-buttons-group"
                                         value={question.typeOfQuestion}
                                         onChange={(event) => this.onQuestionFieldChange(event.target.value, 'typeOfQuestion')}>
-                                        <FormControlLabel value="radio" control={<Radio />} label="Scelta singola" />
-                                        <FormControlLabel value="checkBox" control={<Radio />} label="Scelta multipla" />
+                                        <FormControlLabel value="radio" control={<Radio />} label={texts.radio} />
+                                        <FormControlLabel value="checkBox" control={<Radio />} label={texts.checkBox} />
                                     </RadioGroup>
                                 </FormControl>
 
@@ -135,7 +136,7 @@ class SurveyQuestion extends React.Component {
                                             <TextField
                                                 required
                                                 onChange={(e) => this.onAnswerOptionValueChange(e.target.value, i)}
-                                                label={"Testo opzione " + (i+1) }
+                                                label={texts.optionText + (i+1) }
                                                 defaultValue={o.value}
                                                 variant="standard"/>
                                             <i className="fas fa-times" onClick={() => this.onAnswerOptionDelete(i)}></i>
@@ -145,7 +146,7 @@ class SurveyQuestion extends React.Component {
                                 
                                 <div className="survey-question__footer">
                                     <Button className="survey-question__add-option-btn" variant="contained" onClick={this.onAddOptionClick} startIcon={<AddIcon />}> 
-                                        Aggiungi opzione
+                                        {texts.addOption}
                                     </Button>
                                     <IconButton color="primary" aria-label="upload picture" component="span" onClick={this.onDeleteQuestionClick}>
                                         <DeleteIcon />

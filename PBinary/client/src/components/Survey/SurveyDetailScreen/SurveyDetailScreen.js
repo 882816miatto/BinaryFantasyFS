@@ -70,11 +70,11 @@ class SurveyDetailScreen extends React.Component {
   render() {
     const { fetchedSurvey, survey } = this.state;
     const { language, history } = this.props;
-    const texts = Texts[language].editActivityScreen;
+    const texts = Texts[language].surveyDetailScreen;
 
     return fetchedSurvey && survey ? (
       <React.Fragment>
-        <BackNavigation title="texts.backNavTitle"
+        <BackNavigation title={texts.backNavTitle}
                         onClick={() => history.goBack()} />
         <div className="survey-detail__content">
           <h1>{survey.title}</h1>

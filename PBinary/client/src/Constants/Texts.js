@@ -3905,6 +3905,37 @@ const it = {
   },
   framilyListItem: {
     delete: ""
+  },
+  //Surveys
+  surveyScreen: {
+    backNavTitle: "Compila sondaggio",
+    saveBtn: "Salva",
+    savedAnswersMsg: "Risposte inviate"
+  },
+  surveyQuestion: {
+    questionTitle: "Titolo domanda",
+    radio: "Scelta singola",
+    checkBox: "Scelta multipla",
+    optionText: "Testo opzione ",
+    addOption: "Aggiungi opzione"
+  },
+  createSurveyScreen: {
+    backNavTitle: "Creazione nuovo sondaggio",
+    placeholderTitle: "Titolo sondaggio",
+    addQuestion: "Aggiungi domanda",
+    createSurvey: "Crea sondaggio",
+    createdSurveyMsg: "Sondaggio creato"
+  },
+  surveyListScreen: {
+    backNavTitle: "I miei sondaggi",
+    noSurveys: "Nessun sondaggio creato",
+  },
+  surveyDetailScreen: {
+    backNavTitle: "Dettaglio sondaggio"
+  },
+  reviewCard: {
+    parent: "Genitore",
+    organizer: "Organizzatore",
   }
 };
 

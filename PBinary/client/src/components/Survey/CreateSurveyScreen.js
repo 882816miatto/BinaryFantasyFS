@@ -3,6 +3,7 @@ import PropTypes              from 'prop-types';
 import TextField              from '@material-ui/core/TextField';
 import Button                 from '../shared/Button/Button';
 import BackNavigation         from '../BackNavigation';
+import Texts                  from "../../Constants/Texts";
 import withLanguage           from '../LanguageContext';
 import './CreateSurveyScreen.css';
 import SurveyDAO              from '../../DAOs/surveyDAO';
@@ -60,7 +61,7 @@ class CreateSurveyScreen extends React.Component {
     const { questions, surveyTitle } = this.state;
 
     if (questions.length) {
-      // controllo che le domande inserite abbiano tutti i campi compilati prima di poter creare una nuova odomanda
+      // controllo che le domande inserite abbiano tutti i campi compilati prima di poter creare una nuova domanda e che ci siano almeno 2 opzioni per domanda creata
       canAddQuestion = questions.every(q => !!q.title && !!q.typeOfQuestion && q.questionOptions && q.questionOptions.length && q.questionOptions.length > 1 && q.questionOptions.every(o => !!o.value));
     }
 
@@ -130,17 +131,18 @@ class CreateSurveyScreen extends React.Component {
   };
 
   render() {
-    const { history } = this.props;
+    const { history, language } = this.props;
     const { questions, focusedQuestionIdx, canAddQuestion, canCreateSurvey, snackbarOpen } = this.state;
+    const texts = Texts[language].createSurveyScreen;
     return (
       <div className="create-survey">
-        <BackNavigation title="texts.backNavTitle"
+        <BackNavigation title={texts.backNavTitle}
                         onClick={() => history.goBack()} />
         <div className="create-survey__content">
-          <h1>Creazione nuovo sondaggio</h1>
+    {/*<h1>Creazione nuovo sondaggio</h1>*/}
           <TextField required
                      id="survey-title-field"
-                     placeholder="Titolo sondaggio"
+                     placeholder={texts.placeholderTitle}
                      variant="outlined"
                      onChange={(e) => this.onSurveyTitleChanged(e.target.value)} />
           <div className="create-survey__questions">
@@ -157,7 +159,7 @@ class CreateSurveyScreen extends React.Component {
             ))}
           </div>
           <div className="create-survey__add-question-btn">
-            <Button label="Aggiungi domanda"
+            <Button label={texts.addQuestion}
                     type="standard-icon"
                     color="accent"
                     iconClass="fas fa-plus"
@@ -165,7 +167,7 @@ class CreateSurveyScreen extends React.Component {
                     onClick={this.onQuestionAddClicked} />
           </div>
           <div className="create-survey__footer">
-            <Button label="Crea sondaggio"
+            <Button label={texts.createSurvey}
                     disabled={!canCreateSurvey}
                     onClick={this.onQuestionnaireCreate} />
           </div>
@@ -177,7 +179,7 @@ class CreateSurveyScreen extends React.Component {
                   open={snackbarOpen}
                   autoHideDuration={6000}
                   onClose={this.handleSnackbarClose}
-                  message="Sondaggio creato" />
+                  message={texts.createdSurveyMsg} />
       </div>
     );
   }
