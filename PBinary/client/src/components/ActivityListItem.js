@@ -166,6 +166,15 @@ class ActivityListItem extends React.Component {
                 />
                 <h2>{this.getDatesString()}</h2>
               </div>
+              {activity.avgReviews !== -1 ? (
+                <div className="row no-gutters">
+                  <i
+                    className="fas fa-star"
+                    style={{ marginRight: "1rem" }}
+                  />
+                  <h2>{activity.avgReviews}</h2>
+                </div>
+              ) : null}
             </div>
           </div>
           <div
