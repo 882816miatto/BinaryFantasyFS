@@ -191,7 +191,7 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
                     group_id: group.id,
                     group_name: group.name,
 
-                    survyes: surveysGroupUser
+                    surveys: surveysGroupUser
 
                 });
 
@@ -199,7 +199,7 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
 
         }
 
-        return res.status(200).send(surveysData);
+        return res.status(200).send(surveysByGroup);
 
     } catch (e) {
 

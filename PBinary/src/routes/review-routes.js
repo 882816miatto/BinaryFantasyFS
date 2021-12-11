@@ -39,7 +39,7 @@ router.get('/get-reviews/:activityId', async (req, res) => {
 
                 evaluation: review.evaluation,
                 comment: review.comment ? review.comment : '...',
-                created_at: review.createdAt.toLocaleDateString(undefined, options)
+                created_at: review.createdAt
 
             }
 
@@ -65,7 +65,7 @@ router.post('/store', async (req, res) => {
 
     try {
 
-        review = new ReviewDoc(currentReview);
+        review = new ReviewDoc(req.body.review);
 
         if (review.user_id !== req.user_id) {
             return res.status(400).send('Bad request')

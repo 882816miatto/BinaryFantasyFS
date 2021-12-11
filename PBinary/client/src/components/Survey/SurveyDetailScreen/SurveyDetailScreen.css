@@ -1,0 +1,61 @@
+.survey-detail__content {
+    padding: 10px;
+    min-height: calc(100% - 59px);
+    background-color: var(--background-color);
+}
+
+.survey-detail__content h1 {
+    margin-bottom: 20px;
+}
+
+.survey-detail__questions {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 10px;
+}
+
+.survey-detail__question {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.survey-detail__answers {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 8px;
+}
+
+.survey-detail__answer-labels {
+    position: relative;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 42px;
+    grid-column-gap: 8px;
+
+}
+
+.survey-detail__progress {
+    height: 100%;
+    background-color: var(--primary-color);
+    opacity: .3;
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.survey-detail__answer-labels p {
+    margin: 0;
+}
+
+.survey-detail__answer-label {
+    grid-column: 1;
+    grid-row: 1;
+    padding: 10px;
+}
+
+.survey-detail__answer-percentage {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    padding-top: 10px;
+}

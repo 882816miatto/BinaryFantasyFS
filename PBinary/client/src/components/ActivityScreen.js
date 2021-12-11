@@ -398,8 +398,9 @@ class ActivityScreen extends React.Component {
   };
 
   goToReviews = () => {
-    const { history } = this.props;
-    history.push("/review");
+    const { history, match } = this.props;
+    const { groupId, activityId } = match.params;
+    history.push("/" + activityId + "/reviews");
   };
 
   render() {
@@ -468,17 +469,15 @@ class ActivityScreen extends React.Component {
               <h1 className="center">{activity.name}</h1>
             </div>
             <div className="col-1-10">
-              {userCanEdit ? (
-                <button
-                  type="button"
-                  className="transparentButton center"
-                  onClick={this.goToReviews}
-                >
-                  <i className="fas fa-star" />
-                </button>
-              ) : (
-                <div />
-              )}
+              
+              <button
+                type="button"
+                className="transparentButton center"
+                onClick={this.goToReviews}
+              >
+                <i className="fas fa-star" />
+              </button>
+              
             </div>
             <div className="col-1-10">
               {userCanEdit ? (

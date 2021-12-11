@@ -1,0 +1,56 @@
+.surveys-list {
+    background-color: var(--background-color);
+    padding: 10px;
+    min-height: calc(100% - 59px);
+    display: grid;
+    grid-template-rows: min-content 1fr;
+}
+
+.surveys-list h1 {
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.surveys-list__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 18px;
+    grid-auto-rows: min-content;
+}
+
+.surveys-list__group {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 10px;
+}
+
+.surveys-list__group h2 {
+    margin-bottom: 4px;
+}
+
+.surveys-list__survey {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+    grid-column-gap: 8px;
+    align-items: center;
+}
+
+.surveys-list__survey p {
+    margin: 0;
+}
+
+.surveys-list__empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 40px;
+}
+
+.surveys-list__empty-state img {
+    margin: 16px;
+    width: 50%;
+}

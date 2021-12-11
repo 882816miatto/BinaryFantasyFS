@@ -1,10 +1,10 @@
 import React              from 'react';
-import axios              from 'axios';
 import './ReviewsList.css';
 import ReviewCard         from '../ReviewCard/ReviewCard';
 import ReviewDots         from '../ReviewDots/ReviewDots';
 import Button                   from '../../shared/Button/Button';
 import ReviewCreateUpdateDialog from '../ReviewCreateUpdateDialog/ReviewCreateUpdateDialog';
+import ReviewDAO from '../../../DAOs/reviewDAO';
 
 class ReviewsList extends React.Component {
 	constructor(props) {
@@ -15,24 +15,39 @@ class ReviewsList extends React.Component {
 			sort: 'new', // new, best, worst,
 			createDialogOpen: false,
 			reviewToEdit: {},
+			userCanWriteReview: true,
 		};
 	}
 
 	average = arr => (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(0);
 
 	componentDidMount() {
-		axios.get('/api/surveys/review')
+		this.fetchReviews();
+	}
+
+	fetchReviews = () => {
+		const { match } = this.props;
+    	const { activityId } = match.params;
+		const userId = JSON.parse(localStorage.getItem("user")).id;
+		const {userCanWriteReview} = this.state;
+		let _userCanWriteReview = userCanWriteReview;
+		
+		ReviewDAO.getReviewsForActivity(activityId)
 		     .then(res => {
 			     const { data } = res;
 			     let avgVote = 0;
 			     if (data.length) {
-				     const votes = data.map(r => r.evaluation);
-				     avgVote = this.average(votes);
+					const votes = data.map(r => r.evaluation);
+					avgVote = this.average(votes);
+					_userCanWriteReview = !data.some(r => r.user_id === userId);
 			     }
+				
 			     this.setState({
-				     reviews: data,
-				     avgVote
-			     }, () => console.log('reviews list:', this.state.reviews));
+				     reviews: [...data],
+				     avgVote,
+					 createDialogOpen: false,
+					 userCanWriteReview: _userCanWriteReview,
+			     }, () => this.sort('new'));
 		     });
 	}
 
@@ -79,8 +94,8 @@ class ReviewsList extends React.Component {
 	}
 
 	render() {
-		const { history } = this.props;
-		const { reviews, avgVote, sort, createDialogOpen, reviewToEdit } = this.state;
+		const { history, match } = this.props;
+		const { reviews, avgVote, sort, createDialogOpen, reviewToEdit, userCanWriteReview } = this.state;
 		return (
 				<div className="reviews">
 					<div className="reviews__header-container row no-gutters">
@@ -99,41 +114,43 @@ class ReviewsList extends React.Component {
 						{
 							reviews && reviews.length ?
 							(
-									<div>
-										<div className="reviews__avg">
-											<div>
-												<ReviewDots evaluation={+avgVote} />
-												<p>Voto medio: {avgVote}</p>
-											</div>
-											<Button label={'Scrivi una recensione'} onClick={() => this.onReviewCreate()} />
+								<div>
+									<div className="reviews__avg">
+										<div>
+											<ReviewDots evaluation={+avgVote} />
+											<p>Voto medio: {avgVote}</p>
 										</div>
-										<div className="reviews__sort">
-											<p>Ordina per:</p>
-											<div onClick={() => this.sort('new')} className={sort === 'new' ? 'reviews__sort__button reviews__sort__button--active' : 'reviews__sort__button'}>Più
-												recenti
-											</div>
-											<div onClick={() => this.sort('best')} className={sort === 'best' ? 'reviews__sort__button reviews__sort__button--active' : 'reviews__sort__button'}>Migliori</div>
-											<div onClick={() => this.sort('worst')} className={sort === 'worst' ? 'reviews__sort__button reviews__sort__button--active' : 'reviews__sort__button'}>Peggiori</div>
-										</div>
-										<div className="reviews__list">
-											{reviews.map((review, i) => (
-													<ReviewCard onEditClick={() => this.onReviewEdit(review)} review={review} key={'card-review-' + i} />
-											))}
-										</div>
+										<Button disabled={!userCanWriteReview} label={'Scrivi una recensione'} onClick={() => this.onReviewCreate()} />
 									</div>
+									<div className="reviews__sort">
+										<p>Ordina per:</p>
+										<div onClick={() => this.sort('new')} className={sort === 'new' ? 'reviews__sort__button reviews__sort__button--active' : 'reviews__sort__button'}>Più
+											recenti
+										</div>
+										<div onClick={() => this.sort('best')} className={sort === 'best' ? 'reviews__sort__button reviews__sort__button--active' : 'reviews__sort__button'}>Migliori</div>
+										<div onClick={() => this.sort('worst')} className={sort === 'worst' ? 'reviews__sort__button reviews__sort__button--active' : 'reviews__sort__button'}>Peggiori</div>
+									</div>
+									<div className="reviews__list">
+										{reviews.map((review, i) => (
+												<ReviewCard onEditClick={() => this.onReviewEdit(review)} review={review} key={'card-review-' + i} />
+										))}
+									</div>
+								</div>
 							) :
 							(
-									<div className="reviews__content reviews__empty-state">
-										<Button label={'Scrivi una recensione'} onClick={() => this.onReviewCreate()} />
-									</div>
+								<div className="reviews__content reviews__empty-state">
+									<Button disabled={!userCanWriteReview}  label={'Scrivi una recensione'} onClick={() => this.onReviewCreate()} />
+								</div>
 							)
 						}
 					</div>
 
 					<ReviewCreateUpdateDialog
+							match={match}
 							open={createDialogOpen}
 							review={reviewToEdit}
 							onClose={this.handleClose}
+							onReviewCreated={this.fetchReviews}
 					/>
 
 				</div>

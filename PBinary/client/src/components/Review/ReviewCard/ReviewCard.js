@@ -8,14 +8,6 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import updateLocale from "dayjs/plugin/updateLocale"
 
 class ReviewCard extends React.Component {
-	// TODO fare npm install dayjs
-
-	/*
-	* activity_id: 1,
-		user_id: 2,
-		evaluation: 3,
-		comment: 'Lorem ipsum',*/
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -46,6 +38,16 @@ class ReviewCard extends React.Component {
 		})
 	}
 
+	componentDidMount() {
+		const userId = JSON.parse(localStorage.getItem("user")).id;
+		const { review } = this.state;
+		if (review) {
+			this.setState({
+				canShowEdit: userId === review.user_id,
+			})
+		}
+	}
+
 	getTimestamp = (createdAt) => {
 		return !!dayjs && dayjs(createdAt).fromNow();
 	}
@@ -53,30 +55,30 @@ class ReviewCard extends React.Component {
 	render() {
 		const { review, onEditClick, canShowEdit } = this.state;
 		return (
-				<div className="review-card">
-					<div className="review-card__header">
-						<div className="review-card__avatar" style={{backgroundImage: 'url('+ review.user.avatar +')'}} />
-						<div className="review-card__user">
-							<p className="review-card__user__name">{review.user.role === 'organizer' && <i className="fas fa-user-shield"/>}<strong>{review.user.name + ' ' + review.user.surname}</strong></p>
-							<p>{review.user.role === 'parent' ? 'Genitore' : 'Organizzatore'}</p>
-						</div>
-						{canShowEdit ? <Button type="icon" iconClass="fas fa-pen" color="secondary" onClick={onEditClick} /> : <div></div>}
+			<div className="review-card">
+				<div className="review-card__header">
+					<div className="review-card__avatar" style={{backgroundImage: 'url('+ review.user.avatar +')'}} />
+					<div className="review-card__user">
+						<p className="review-card__user__name">{review.user.role === 'organizer' && <i className="fas fa-user-shield"/>}<strong>{review.user.given_name}</strong></p>
+						<p>{review.user.role === 'parent' ? 'Genitore' : 'Organizzatore'}</p>
 					</div>
-					<div className="review-card__evaluation">
-						<ReviewDots evaluation={review.evaluation} />
-						<p>{this.getTimestamp(review.created_at)}</p>
-					</div>
-					<div className="review-card__text">
-						{review.comment}
-					</div>
-					{!!review.images && !!review.images.length && (
-							<div className="review-card__gallery">
-								{review.images.map((image, i) => (
-										<div key={i} className="review-card__gallery-item" style={{ backgroundImage: 'url(' + image + ')'}}></div>
-								))}
-							</div>
-					)}
+					{canShowEdit ? <Button type="icon" iconClass="fas fa-pen" color="secondary" onClick={onEditClick} /> : <div></div>}
 				</div>
+				<div className="review-card__evaluation">
+					<ReviewDots evaluation={review.evaluation} />
+					<p>{this.getTimestamp(review.created_at)}</p>
+				</div>
+				<div className="review-card__text">
+					{review.comment}
+				</div>
+				{!!review.images && !!review.images.length && (
+					<div className="review-card__gallery">
+						{review.images.map((image, i) => (
+								<div key={i} className="review-card__gallery-item" style={{ backgroundImage: 'url(' + image + ')'}}></div>
+						))}
+					</div>
+				)}
+			</div>
 		);
 	}
 

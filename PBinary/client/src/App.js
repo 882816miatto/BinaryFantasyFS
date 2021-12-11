@@ -171,6 +171,10 @@ const SurveysListScreen = Loadable({
   loader: () => import("./components/Survey/SurveysListScreen/SurveysListScreen"),
   loading: () => Loading
 });
+const SurveyDetailScreen = Loadable({
+  loader: () => import("./components/Survey/SurveyDetailScreen/SurveyDetailScreen"),
+  loading: () => Loading,
+})
 
 // Reviews
 const ReviewsListScreen = Loadable({
@@ -423,10 +427,14 @@ class App extends React.Component {
                 path="/surveys"
                 component={SurveysListScreen}
               />
+              <PrivateRoute
+                exact
+                path="/surveys/:surveyId"
+                component={SurveyDetailScreen} />
               {/*REVIEW */}
               <PrivateRoute
 			            exact
-			            path="/review"
+			            path="/:activityId/reviews"
 			            component={ReviewsListScreen}
 	            />
 

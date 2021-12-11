@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import ReviewDots from "../ReviewDots/ReviewDots";
 import ImagePicker from "../../shared/ImagePicker/ImagePicker";
 import Button from "../../shared/Button/Button";
+import ReviewDAO from "../../../DAOs/reviewDAO";
+import { Snackbar } from "@material-ui/core";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -17,6 +19,7 @@ class ReviewCreateUpdateDialog extends React.Component {
       onClose: this.props.onClose,
       open: this.props.open,
       newReview: this.props.review ? this.props.review : {},
+      snackbarOpen: false,
     };
   }
 
@@ -29,9 +32,9 @@ class ReviewCreateUpdateDialog extends React.Component {
     );
   };
 
-  handleListItemClick = (value) => {
+  /*handleListItemClick = (value) => {
     this.state.onClose(value);
-  };
+  };*/
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
     if (nextProps.open !== this.state.open) {
@@ -59,7 +62,28 @@ class ReviewCreateUpdateDialog extends React.Component {
   };
 
   createReview = () => {
-    console.log(this.state.newReview);
+    const user_id = JSON.parse(localStorage.getItem("user")).id;
+    const { match } = this.props;
+    const { activityId } = match.params;
+    const activity_id = activityId;
+    const {evaluation, comment} = this.state.newReview;
+    const newReview = {
+      activity_id,
+      user_id,
+      evaluation,
+      comment,
+    };
+
+    ReviewDAO.insertOneReview(newReview).then(response => {
+      const { onReviewCreated } = this.props;
+      this.setState({
+        snackbarOpen: true,
+      }, () => setTimeout(() => {
+        this.setState({open: false});
+        onReviewCreated();
+      }, 2500));
+    })
+    //TODO in caso di errore mostrare la snackbar con l'errore senza chiudere la modale
   };
 
   handleDelete = () => {
@@ -70,8 +94,14 @@ class ReviewCreateUpdateDialog extends React.Component {
     // TODO
   };
 
+  handleSnackbarClose = () => {
+    this.setState({
+      snackbarOpen: false,
+    });
+  }
+
   render() {
-    const { open, newReview } = this.state;
+    const { open, newReview, snackbarOpen } = this.state;
     return (
       <Dialog
         fullScreen
@@ -137,6 +167,14 @@ class ReviewCreateUpdateDialog extends React.Component {
             </div>
           </div>
         </div>
+        <Snackbar anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={this.handleSnackbarClose}
+          message="Recensione creata" />
       </Dialog>
     );
   }
@@ -148,4 +186,8 @@ ReviewCreateUpdateDialog.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
   review: PropTypes.object,
+  history: PropTypes.object,
+  language: PropTypes.string,
+  match: PropTypes.object,
+  onReviewCreated: PropTypes.func,
 };
