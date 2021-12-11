@@ -21,7 +21,6 @@ router.get('/get-reviews/:activityId', async (req, res) => {
     try {
 
         const reviews = await Review.find({activity_id: activityId});
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
         const mappedReviews = reviews.map(review => {
 
@@ -39,7 +38,7 @@ router.get('/get-reviews/:activityId', async (req, res) => {
 
                 evaluation: review.evaluation,
                 comment: review.comment ? review.comment : '',
-                created_at: review.createdAt.toLocaleDateString(undefined, options)
+                created_at: review.createdAt
 
             }
 
