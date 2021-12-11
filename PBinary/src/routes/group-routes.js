@@ -1201,7 +1201,7 @@ router.get('/:id/activities', (req, res, next) => {
           
           for (const act of activities) {
 
-            let reviews = await Review.find({activity_id: String(act._id)}, {evaluation: 1});
+            let reviews = await Review.find({activity_id: act.activity_id}, {evaluation: 1});
 
             let cnt = 0;
             let sum = 0;
