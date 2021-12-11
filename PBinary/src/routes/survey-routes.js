@@ -209,7 +209,7 @@ router.get('/show-surveys-by-user-id', async (req, res) => {
 
 });
 
-/*
+
 router.get('/review', async (req, res) => {
 	let reviews = [
 		{
@@ -253,7 +253,6 @@ router.get('/review', async (req, res) => {
 
 	return res.status(200).send(reviews);
 });
-*/
 
 router.get('/:groupId/show-surveys-by-group-id', async (req, res) => {
 

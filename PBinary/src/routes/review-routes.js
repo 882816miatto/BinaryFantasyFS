@@ -38,8 +38,8 @@ router.get('/get-reviews/:activityId', async (req, res) => {
                 },
 
                 evaluation: review.evaluation,
-                comment: review.comment ? review.comment : '...',
-                created_at: review.createdAt
+                comment: review.comment ? review.comment : '',
+                created_at: review.createdAt.toLocaleDateString(undefined, options)
 
             }
 
@@ -84,12 +84,43 @@ router.post('/store', async (req, res) => {
         reviewToInsert['user_role'] = responseUser.role;
         reviewToInsert['user_image'] = responseImage.path;
 
-        await Review.create(reviewToInsert);
+        await Review.findOneAndUpdate({activity_id: review.activity_id, user_id: review.user_id}, reviewToInsert, {upsert: true});
 
         return res.status(200).send('Review has been inserted successfully');
 
     } catch( e) { return res.status(500).send(e); }
     
+});
+
+router.delete('/delete', async (req, res) => {
+
+    if (!req.user_id) { 
+        return res.status(401).send('Not authenticated'); 
+    }
+
+    if (!req.body || !req.body.reviewId) {
+        return res.status(400).send('Bad request');
+    }
+
+    const reviewId = req.body.reviewId;
+
+    try {
+
+        let review = await Review.findById(reviewId);
+
+        if (!review) {
+            return res.status(404).send('Review does not exist');
+        }
+
+        if (review.user_id !== req.user_id) {
+            return res.status(401).send('Unauthorized');
+        }
+
+        await Review.findByIdAndDelete(reviewId);
+
+        return res.status(200).send('Deletion completed successfully');
+
+    } catch (e) { return res.status(500).send(e); }
 
 });
 
