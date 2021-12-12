@@ -3912,12 +3912,13 @@ const it = {
     saveBtn: "Salva",
     savedAnswersMsg: "Risposte inviate"
   },
-  surveyQuestion: {
+  surveyQuestionEditable: {
     questionTitle: "Titolo domanda",
     radio: "Scelta singola",
     checkBox: "Scelta multipla",
     optionText: "Testo opzione ",
-    addOption: "Aggiungi opzione"
+    addOption: "Aggiungi opzione",
+    emptyQuestionMsg: "Domanda vuota, click per modificare"
   },
   createSurveyScreen: {
     backNavTitle: "Creazione nuovo sondaggio",
@@ -3933,9 +3934,28 @@ const it = {
   surveyDetailScreen: {
     backNavTitle: "Dettaglio sondaggio"
   },
+  //Reviews
   reviewCard: {
     parent: "Genitore",
     organizer: "Organizzatore",
+  },
+  reviewCreateUpdateDialog: {
+    writeReview: "Scrivi recensione",
+    yourExperience: "La tua esperienza",
+    writeCommentPlaceholder: "Scrivi una recensione...",
+    delete: "Elimina",
+    cancel: "Annulla",
+    publish: "Pubblica",
+    reviewCreatedMsg: "Recensione creata",
+  },
+  reviewList: {
+    reviews: "Recensioni",
+    avgVote: "Voto medio",
+    writeReviewBtn: "Scrivi una recensione",
+    orderBy: "Ordina per",
+    mostRecent: "Più recenti",
+    best: "Migliori",
+    worst: "Peggiori",
   }
 };
 

@@ -6,6 +6,8 @@ import ReviewDots from "../ReviewDots/ReviewDots";
 import ImagePicker from "../../shared/ImagePicker/ImagePicker";
 import Button from "../../shared/Button/Button";
 import ReviewDAO from "../../../DAOs/reviewDAO";
+import Texts            		from '../../../Constants/Texts';
+import withLanguage   			from '../../LanguageContext';
 import { Snackbar } from "@material-ui/core";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -102,6 +104,8 @@ class ReviewCreateUpdateDialog extends React.Component {
 
   render() {
     const { open, newReview, snackbarOpen } = this.state;
+    const { language } = this.props;
+    const texts = Texts[language].reviewCreateUpdateDialog;
     return (
       <Dialog
         fullScreen
@@ -121,11 +125,11 @@ class ReviewCreateUpdateDialog extends React.Component {
               </button>
             </div>
             <div className="col-5-10">
-              <h1 className="center">Scrivi recensione</h1>
+              <h1 className="center">{texts.writeReview}</h1>
             </div>
           </div>
           <div className="review-create__content">
-            <h1>La tua esperienza</h1>
+            <h1>{texts.yourExperience}</h1>
             <ReviewDots
               editable
               evaluation={newReview ? newReview.evaluation : 0}
@@ -136,7 +140,7 @@ class ReviewCreateUpdateDialog extends React.Component {
               multiline
               variant="outlined"
               defaultValue={newReview ? newReview.comment : ""}
-              placeholder="Scrivi una recensione..."
+              placeholder={texts.writeCommentPlaceholder}
               onChange={(e) =>
                 this.onReviewFieldChanged("comment", e.target.value)
               }
@@ -150,7 +154,7 @@ class ReviewCreateUpdateDialog extends React.Component {
           <div className="review-create__footer">
             {newReview.user ? (
               <Button
-                label="Elimina"
+                label={texts.delete}
                 color="error"
                 onClick={this.handleDelete}
               />
@@ -159,11 +163,11 @@ class ReviewCreateUpdateDialog extends React.Component {
             )}
             <div className="review-create__footer-right">
               <Button
-                label="Annulla"
+                label={texts.cancel}
                 color="secondary"
                 onClick={this.handleClose}
               />
-              <Button label="Pubblica" onClick={this.createReview} />
+              <Button label={texts.publish} onClick={this.createReview} />
             </div>
           </div>
         </div>
@@ -174,13 +178,13 @@ class ReviewCreateUpdateDialog extends React.Component {
           open={snackbarOpen}
           autoHideDuration={6000}
           onClose={this.handleSnackbarClose}
-          message="Recensione creata" />
+          message={texts.reviewCreatedMsg} />
       </Dialog>
     );
   }
 }
 
-export default ReviewCreateUpdateDialog;
+export default withLanguage(ReviewCreateUpdateDialog);
 
 ReviewCreateUpdateDialog.propTypes = {
   open: PropTypes.bool,
