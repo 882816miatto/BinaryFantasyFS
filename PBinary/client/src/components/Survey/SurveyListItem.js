@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import { Skeleton } from "antd";
 import { withRouter } from "react-router-dom";
 import withLanguage from "../LanguageContext";
-//import SurveyDAO from "../../DAOs/surveyDAO";
 
 class SurveyListItem extends React.Component {
     constructor(props) {
@@ -13,20 +11,13 @@ class SurveyListItem extends React.Component {
     }
 
     async componentDidMount() {
-        const { survey } = this.state;
-        // const userId = JSON.parse(localStorage.getItem("user")).id;
-        // const { groupId } = this.props;
-        // const surveyId = survey.survey_id;
+        const { survey } = this.state;;
         this.setState({ survey });
       }
 
     handleSurveyClick = event => {
         const { history } = this.props;
-        //const { pathname } = history.location;
-        //history.push(`${pathname}/${event.currentTarget.id}`);
-        //history.push(`/groups/${groupId}/activities/pending`);
         history.push(`/surveys/show-survey-by-id/${event.currentTarget.id}`);
-        //SurveyDAO.getSurveyById(this.state.survey.id)
       };
 
     render() {

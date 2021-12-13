@@ -3905,6 +3905,57 @@ const it = {
   },
   framilyListItem: {
     delete: ""
+  },
+  //Surveys
+  surveyScreen: {
+    backNavTitle: "Compila sondaggio",
+    saveBtn: "Salva",
+    savedAnswersMsg: "Risposte inviate"
+  },
+  surveyQuestionEditable: {
+    questionTitle: "Titolo domanda",
+    radio: "Scelta singola",
+    checkBox: "Scelta multipla",
+    optionText: "Testo opzione ",
+    addOption: "Aggiungi opzione",
+    emptyQuestionMsg: "Domanda vuota, click per modificare"
+  },
+  createSurveyScreen: {
+    backNavTitle: "Creazione nuovo sondaggio",
+    placeholderTitle: "Titolo sondaggio",
+    addQuestion: "Aggiungi domanda",
+    createSurvey: "Crea sondaggio",
+    createdSurveyMsg: "Sondaggio creato"
+  },
+  surveyListScreen: {
+    backNavTitle: "I miei sondaggi",
+    noSurveys: "Nessun sondaggio creato",
+  },
+  surveyDetailScreen: {
+    backNavTitle: "Dettaglio sondaggio"
+  },
+  //Reviews
+  reviewCard: {
+    parent: "Genitore",
+    organizer: "Organizzatore",
+  },
+  reviewCreateUpdateDialog: {
+    writeReview: "Scrivi recensione",
+    yourExperience: "La tua esperienza",
+    writeCommentPlaceholder: "Scrivi una recensione...",
+    delete: "Elimina",
+    cancel: "Annulla",
+    publish: "Pubblica",
+    reviewCreatedMsg: "Recensione creata",
+  },
+  reviewList: {
+    reviews: "Recensioni",
+    avgVote: "Voto medio",
+    writeReviewBtn: "Scrivi una recensione",
+    orderBy: "Ordina per",
+    mostRecent: "Più recenti",
+    best: "Migliori",
+    worst: "Peggiori",
   }
 };
 

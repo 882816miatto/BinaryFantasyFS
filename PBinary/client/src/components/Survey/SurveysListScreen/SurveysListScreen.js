@@ -44,14 +44,15 @@ class SurveysListScreen extends React.Component {
     }
 
     render() {
-        const { history } = this.props
+        const { history, language } = this.props
         const { fetchedSurveys, surveys } = this.state
+        const texts = Texts[language].surveyListScreen;
         return (
             fetchedSurveys ? (
             <React.Fragment>
-                <BackNavigation title="texts.backNavTitle" onClick={() => history.goBack()} />
+                <BackNavigation title={texts.backNavTitle} onClick={() => history.goBack()} />
                 <div className="surveys-list">
-                    <h1>I miei sondaggi</h1>
+                    {/*<h1>I miei sondaggi</h1>*/}
                     {!!surveys && !!surveys.length ? (
                         <div className="surveys-list__list">
                         {surveys.map(group => (
@@ -70,7 +71,7 @@ class SurveysListScreen extends React.Component {
                     ) : (
                         <div className="surveys-list__empty-state">
                             <img src={emptyStateImage} />
-                            <p>Nessun sondaggio creato</p>
+                            <p>{texts.noSurveys}</p>
                         </div>
                     )}
                     

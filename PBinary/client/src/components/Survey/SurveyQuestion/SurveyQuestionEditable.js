@@ -9,6 +9,7 @@ import AddIcon                 from '@material-ui/icons/Add';
 import Button                  from '../../shared/Button/Button';
 import IconButton              from '@material-ui/core/IconButton';
 import DeleteIcon              from '@material-ui/icons/Delete';
+import Texts                  from "../../../Constants/Texts";
 import withLanguage            from '../../LanguageContext';
 import './SurveyQuestionEditable.css';
 
@@ -58,7 +59,7 @@ class SurveyQuestionEditable extends React.Component {
   onAddOptionClick = () => {
     const { question } = this.state;
     const newOption = {
-      id: question.questionOptions.length + 1,
+      id: Date.now(),
       value: '',
     };
     if (!question.questionOptions) {
@@ -101,9 +102,10 @@ class SurveyQuestionEditable extends React.Component {
 
   render() {
     const { focused, question, editable } = this.state;
+    const { language } = this.props;
+    const texts = Texts[language].surveyQuestionEditable;
     return (
       <>
-        {/* <OutsideAlerter onOutsideClick={e => this.onLostFocus(e) }> */}
         <div className={
           focused
           ? 'survey-question survey-question--focused'
@@ -117,7 +119,7 @@ class SurveyQuestionEditable extends React.Component {
                            this.onQuestionFieldChange(e.target.value, 'title')
                          }
                          id="survey-title-field"
-                         placeholder="Titolo domanda"
+                         placeholder={texts.questionTitle}
                          defaultValue={question.title}
                          variant="standard" />
               <FormControl component="fieldset">
@@ -132,10 +134,10 @@ class SurveyQuestionEditable extends React.Component {
                             }>
                   <FormControlLabel value="radio"
                                     control={<Radio />}
-                                    label="Scelta singola" />
+                                    label={texts.radio} />
                   <FormControlLabel value="checkBox"
                                     control={<Radio />}
-                                    label="Scelta multipla" />
+                                    label={texts.checkBox} />
                 </RadioGroup>
               </FormControl>
 
@@ -153,7 +155,7 @@ class SurveyQuestionEditable extends React.Component {
                               onChange={(e) =>
                                 this.onAnswerOptionValueChange(e.target.value, i)
                               }
-                              placeholder={`Testo opzione ${i + 1}`}
+                              placeholder={`${texts.optionText} ${i + 1}`}
                               defaultValue={o.value}
                               variant="standard" />
                    <i className="fas fa-times"
@@ -165,7 +167,7 @@ class SurveyQuestionEditable extends React.Component {
                 <Button color="secondary"
                         type="standard-icon"
                         onClick={this.onAddOptionClick}
-                        label="Aggiungi opzione"
+                        label={texts.addOption}
                         iconClass="fas fa-plus" />
                 <Button color="error"
                         type="icon"
@@ -180,33 +182,26 @@ class SurveyQuestionEditable extends React.Component {
                  <>
                    <p className={!question.title ? 'error-text' : ''}>{question.title || 'No title'}</p>
                    <div className="survey-question__options">
-                     {editable ? (
-                       <>
-                         {!!question.questionOptions &&
-                          !!question.questionOptions.length &&
-                          question.questionOptions.map((o, i) => (
-                            <div className="survey-question__answer-option survey-question__answer-option--not-focused"
-                                 key={o.id}>
-                              <div className={
-                                question.typeOfQuestion === 'radio'
-                                ? 'survey-question__radio-circle'
-                                : 'survey-question__checkbox-square'
-                              } />
-                              <p className={!o.value ? 'error-text' : ''}>{o.value || 'No text'}</p>
-                            </div>
-                          ))}
-                       </>
-                     ) : (
-                        <div>
-                          TODO: visualizzazione dell'utente che fa il sondaggio piu
-                          visualizzazione del creatore del sondaggio con percentuali </div>
-                      )}
+                     <>
+                       {!!question.questionOptions &&
+                        !!question.questionOptions.length &&
+                        question.questionOptions.map((o, i) => (
+                          <div className="survey-question__answer-option survey-question__answer-option--not-focused"
+                               key={o.id}>
+                            <div className={
+                              question.typeOfQuestion === 'radio'
+                              ? 'survey-question__radio-circle'
+                              : 'survey-question__checkbox-square'
+                            } />
+                            <p className={!o.value ? 'error-text' : ''}>{o.value || 'No text'}</p>
+                          </div>
+                        ))}
+                     </>
                    </div>
-                 </>) : <div className="survey-question__empty"><p><i className="fas fa-exclamation-circle" /> Domanda vuota, click per modificare</p></div>}
+                 </>) : <div className="survey-question__empty"><p><i className="fas fa-exclamation-circle" /> {texts.emptyQuestionMsg}</p></div>}
              </div>
            )}
         </div>
-        {/* </OutsideAlerter> */}
       </>
     );
   }

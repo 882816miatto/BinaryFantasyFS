@@ -90,6 +90,7 @@ class SurveyScreen extends React.Component {
         snackbarOpen: true,
       }, () => setTimeout(() => history.goBack(), 2500));
     });
+    //TODO mostrare snackbar anche in caso di errore con messaggio senza andare indietro con goback()
   };;
 
   onQuestionAnswerChanged = (newAnswers, questionId) => {
@@ -111,11 +112,11 @@ class SurveyScreen extends React.Component {
   render() {
     const { fetchedSurvey, title, questions, status, answers, snackbarOpen, canSave } = this.state;
     const { language, history } = this.props;
-    const texts = Texts[language].editActivityScreen;
+    const texts = Texts[language].surveyScreen;
 
     return fetchedSurvey ? (
       <React.Fragment>
-        <BackNavigation title="texts.backNavTitle"
+        <BackNavigation title={texts.backNavTitle}
                         onClick={() => history.goBack()} />
         <div className="survey-screen__content">
           <h1>{title}</h1>
@@ -134,14 +135,14 @@ class SurveyScreen extends React.Component {
                     open={snackbarOpen}
                     autoHideDuration={6000}
                     onClose={this.handleSnackbarClose}
-                    message="Risposte inviate" />
+                    message={texts.savedAnswersMsg}/>
           {status && (
             <div className="survey-screen__footer">
               <Button color="primary"
                       onClick={this.handleSave}
                       disabled={!canSave}
                       type="standard-icon"
-                      label="Salva"
+                      label={texts.saveBtn}
                       iconClass="fas fa-save" />
             </div>
           )}
