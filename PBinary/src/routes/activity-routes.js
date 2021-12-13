@@ -32,29 +32,22 @@ router.get('/get-activity-by-id/:activityId', async (req, res) => {
 
     });
 
-<<<<<<< Updated upstream
-    const mappedActivity = {
-      name: response.name,
-      average: cnt !== 0 ? Math.round((sum / cnt) * 10) / 10 : -1
+    let reviews = await Review.find({activity_id: activityId}, {evaluation: 1});
+
+    let cnt = 0;
+    let sum = 0;
+
+    reviews.forEach(doc => {
+
+      cnt += 1;
+      sum += doc.evaluation;
+
+    });
+
+    const mappedActivity = { 
+        name: response.name,
+        average: cnt !== 0 ? Math.round((sum / cnt) * 10) / 10 : -1
     };
-=======
-        let reviews = await Review.find({activity_id: activityId}, {evaluation: 1});
-
-        let cnt = 0;
-        let sum = 0;
-
-        reviews.forEach(doc => {
-
-          cnt += 1;
-          sum += doc.evaluation;
-
-        });
-
-        const mappedActivity = { 
-            name: response.name,
-            average: cnt !== 0 ? Math.round((sum / cnt) * 10) / 10 : -1
-        };
->>>>>>> Stashed changes
 
     return res.status(200).send(mappedActivity);
 
