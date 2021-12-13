@@ -9,7 +9,7 @@ function colorLog(message, color) {
              color = "Green"; 
              break;
         case "info":     
-                color = "DodgerBlue";  
+             color = "DodgerBlue";  
              break;
         case "error":   
              color = "Red";     
