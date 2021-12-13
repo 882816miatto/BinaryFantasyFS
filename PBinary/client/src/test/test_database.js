@@ -1,6 +1,28 @@
 import axios from "axios";
 
-// Preliminar database testing
+function colorLog(message, color) {
+
+    color = color || "black";
+
+    switch (color) {
+        case "success":  
+             color = "Green"; 
+             break;
+        case "info":     
+                color = "DodgerBlue";  
+             break;
+        case "error":   
+             color = "Red";     
+             break;
+        case "warning":  
+             color = "Orange";   
+             break;
+        default: 
+             color = color;
+    }
+
+    console.log("%c" + message, "color:" + color);
+}
 
 const sendTo = function(url, document) {
     return axios.post(url, document);
@@ -45,33 +67,35 @@ function createReview(activity_id, user_id, user_email, evaluation) {
 
 }
 
-async function test1() {
+// Preliminar database testing
+
+async function test_creazioneSondaggio() {
 
     const survey = createSurvey(true, 'TITLE', 'USER_ID', 'EMAIL', 'GROUP_ID'); 
 
     try {
 
         await sendTo('/api/tests/survey', survey);
-        console.log('Test 1 passed');
+        colorLog('Test 1: creazione del sondaggio riuscito con successo', 'success');
 
-    } catch (err) { console.error('Test 1 not passed', err); }
+    } catch (err) { colorLog('Test 1: creazione del sondaggio non riuscito', 'error'); }
 
 }
 
-async function test2() {
+async function test_cancellazioneSondaggio() {
 
     const survey = createSurvey(true, 'TITLE', 'USER_ID', 'EMAIL', 'GROUP_ID'); 
 
     try {
 
         await sendTo('/api/tests/deleteSurvey', survey);
-        console.log('Test 2 passed');
+        colorLog('Test 2: cancellazione del sondaggio riuscito con successo', 'success');
 
-    } catch (err) { console.error('Test 2 not passed', err); }
+    } catch (err) { colorLog('Test 2: cancellazione del sondaggio non riuscito', 'error'); }
 
 }
 
-async function test3() {
+async function test_operazioniVarie() {
 
     const survey = createSurvey(true, 'TITLE', 'USER_ID', 'EMAIL', 'GROUP_ID'); 
 
@@ -89,13 +113,13 @@ async function test3() {
             user_id: 'ZioTreno'}]
         })
 
-        console.log('Test 3 passed');
+        colorLog('Test 3: inserimento e cancellazione di sondaggi e risposte riuscito con successo', 'success');
 
-    } catch (err) { console.error('Test 3 not passed', err); }
+    } catch (err) { colorLog('Test 3: inserimento e cancellazione di sondaggi e risposte non riuscito', 'error'); }
 
 }
 
-async function test4() {
+async function test_creazioneRecensione() {
 
     const activity_id = 'activity_id';
     const user_id = 'user_id';
@@ -107,33 +131,33 @@ async function test4() {
     try {
 
         await sendTo('/api/tests/insertReview', review);
-        console.log('Test 4 passed');
+        colorLog('Test 4: creazione della recensione riuscita con successo', 'success');
 
-    } catch (e) { console.error('Test 4 not passed', e); }
+    } catch (e) { colorLog('Test 4: creazione della recensione non riuscita', 'error'); }
     
 }
 
-async function test5() {
+async function test_axiosDelete() {
 
     try {
+
         await axios.delete('/api/tests/deleteTrial', {data: {s: 'Stringa_di_dati'} });
-        console.log('Test 5 passed');
-    } catch (e) { console.error('Test 5 not passed', e); }
+        colorLog('Test 5: testing di una chiamata delete riuscito con successo', 'success');
+
+    } catch (e) { colorLog('Test 5: testing di una chiamata delete non riuscito', 'error'); }
 
 }
 
-async function test6() {
+async function test_axiosGet() {
 
     try {
         await axios.get('/api/tests/getTrial', {params: {answer: [42, 67]} });
-        console.log('Test 6 passed');
-    } catch (e) { console.error('Test 6 not passed', e); }
+        colorLog('Test 6: testing di una chiamata get riuscito con successo', 'success');
+    } catch (e) { colorLog('Test 6: testing di una chiamata get non riuscito', 'error'); }
 
 }
 
-// Survey Testing
-
-async function createSurveysForTesting() {
+async function test_creazioneSondaggiPerTesting() {
 
     const manySurveys = [];
 
@@ -283,17 +307,13 @@ async function createSurveysForTesting() {
     try {
 
         await axios.post('/api/tests/create-surveys', {data: manySurveys});
-        console.log("Test 7 passed");
+        colorLog("Test 7: creazione di vari sondagi riuscita con successo", 'success');
 
-    } catch (e) {
-
-        console.error("Error:", e);
-
-    }
+    } catch (e) { colorLog("Test 7: creazione di vari sondaggi no riuscita", 'error'); }
 
 }
 
-async function createAnswersForTesting() {
+async function test_creazioneRispostePerTesting() {
 
     const groupId = 'gId';
     const userId = 'simone';
@@ -327,11 +347,9 @@ async function createAnswersForTesting() {
         const insertMany = [a1, a2];
 
         await axios.post('/api/tests/create-answers', insertMany);
-        console.log('Test 11 passed');
+        colorLog('Test 11: inserimento di alcune riposte riuscito con successo', 'success');
  
-    } catch (e) {
-        console.error('Test 11 not passed', e);
-    }
+    } catch (e) { colorLog('Test 11: inserimento di alcune riposte non riuscito', 'error'); }
 
     try {
 
@@ -365,13 +383,9 @@ async function createAnswersForTesting() {
         const insertManyAns = [a101, a102];
 
         await axios.post('/api/tests/store-answers', {answers: insertManyAns});
-        console.log('Test 11.1 passed');
+        colorLog('Test 11.1: riuscito con successo', 'success');
 
-    } catch (e) {
-
-        console.error('Test 11.1 not passed', e);
-
-    } 
+    } catch (e) { colorLog('Test 11.1: non riuscito', 'error'); } 
 
     try {
 
@@ -406,17 +420,17 @@ async function createAnswersForTesting() {
         const insertManyAns = [a101, a102];
 
         await axios.post('/api/tests/store-answers', {answers: insertManyAns});
-        console.error('Test 11.2 not passed');
+        colorLog('Test 11.2: non riuscito', 'error');
 
     } catch (e) {
 
-        console.log('Test 11.2 passed for Bad Request', e);
+        colorLog('Test 11.2: riuscito con successo tramite Bad Request', 'success');
 
     } 
 
 }
 
-async function getGID() {
+async function test_getSondaggio() {
 
     const groupId = 'gId';
     const userId = 'userTest';
@@ -424,32 +438,24 @@ async function getGID() {
     try {
 
         await axios.get(`/api/tests/show-surveys/${groupId}/${userId}`);
-        console.log('Test 8 passed');
+        colorLog('Test 8: get del sondaggio riuscito con successo', 'success');
 
-    } catch (e) {
-
-        console.error("Test 8 not passed: error over get", e);
-
-    }
+    } catch (e) { colorLog("Test 8: get del sondaggio non riuscito", 'error'); }
 
 }
 
-async function deleteAll() {
+async function test_restore() {
 
     try {
 
         await axios.get('/api/tests/delete-all');
-        console.log('Restore completed');
+        colorLog('Restore completato', 'success');
 
-    } catch (e) {
-
-        console.error('Restore not completed', e);
-
-    }
+    } catch (e) { colorLog('Restore non completato', 'error'); }
 
 }
 
-async function showSurveys() {
+async function test_getSondaggi() {
 
     const groupId = 'gId';
     const userId = 'simone';
@@ -460,32 +466,32 @@ async function showSurveys() {
        const id = response.data[0].id;
        response = await axios.get(`/api/tests/show-survey-by-id/${id}`);
 
-       console.log('Test 9 passed');
+       colorLog('Test 9: get dei sondaggi riuscito con successo', 'success');
 
     } catch (e) {
-        console.error('Test 9 not passed', e);
+        colorLog('Test 9: get dei sondaggi non riuscito', 'error');
     }
 
 }
 
-async function showSurveysForUser() {
+async function test_getSondaggioUtente() {
 
     const userId = 'userTest';
 
     try {
 
-        const response = await axios.get(`/api/tests/show-surveys-by-user-id/${userId}`);
-        console.log('Test 10 passed', response.data);
+        await axios.get(`/api/tests/show-surveys-by-user-id/${userId}`);
+        colorLog('Test 10: get dei sondaggi per utente riuscito con successo', 'success');
 
     } catch (e) {
 
-        console.error('Test 10 not passed', e);
+        colorLog('Test 10: get dei sondaggi per utente non riuscito', 'error');
 
     }
 
 }
 
-async function deleteSurvey() {
+async function test_eliminazioneSondaggio() {
 
     const groupId = 'gId';
     const userId = 'simone';
@@ -495,17 +501,13 @@ async function deleteSurvey() {
         let response = await axios.get(`/api/tests/show-surveys/${groupId}/${userId}`);
         const id = response.data[0].id;
         response = await axios.delete('/api/tests/delete-survey', {data: {surveyId: id} });
-        console.log('Test 12 passed');
+        colorLog('Test 12: cancellazione sondaggio riuscita con successo', 'success');
 
-    } catch (e) {
-
-        console.error('Test 12 not passed', e);
-
-    }
+    } catch (e) { colorLog('Test 12: canellazione sondaggio non riuscita', 'error'); }
 
 }
 
-async function store() {
+async function test_inserimentoSondaddio() {
 
     let surveyObj = {
 
@@ -541,14 +543,10 @@ async function store() {
 
     try {
 
-        let response = await axios.post('/api/tests/store', {survey: surveyObj});
-        console.log('Test 13 passed', response.data);
+        await axios.post('/api/tests/store', {survey: surveyObj});
+        colorLog('Test 13: inserimento sondaggio riuscito con successo', 'success');
 
-    } catch (e) {
-
-        console.error('Test 13 not passed');
-
-    }
+    } catch (e) { colorLog('Test 13: inserimento sondaggio non riuscito', 'error'); }
 
 }
 
@@ -563,8 +561,7 @@ async function showResults() {
         const id = response.data[0].id;
         response = await axios.get(`/api/tests/show-survey-by-id/${id}`);
 
-        let res = await axios.get(`/api/tests/show-answers-by-survey-id/${id}`);
-        console.log(res.data)
+        await axios.get(`/api/tests/show-answers-by-survey-id/${id}`);
  
     } catch (e) {
         console.error('An error occurred', e);
@@ -581,10 +578,8 @@ async function storeReview() {
         comment: 'Questo è un commento di prova'
     };
 
-    try {
-        let response = await axios.post('/api/tests/store-review', {review: review});
-        console.log('Test store review passed', response.data);
-
+    try { 
+        await axios.post('/api/tests/store-review', {review: review});
     } catch (e) { console.error('Test store review not passed', e); }
 
 }
@@ -592,8 +587,7 @@ async function storeReview() {
 async function getFromReq() {
 
     try {
-        let response = await axios.get('/api/tests/get-from-req')
-        console.log(response.data);
+        await axios.get('/api/tests/get-from-req')
     } catch (e) { console.error(e); }
 
 }
@@ -601,9 +595,7 @@ async function getFromReq() {
 async function testMember() {
 
     try {
-        let response = await axios.get('/api/tests/get-group-id-and-name-for-user');
-        console.log(response.data);
-
+        await axios.get('/api/tests/get-group-id-and-name-for-user');
     } catch (e) {
         console.error(e);
     }
@@ -614,26 +606,26 @@ async function handleTest() {
 
     try {
   
-        await test1();
-        await test2();
-        await test3();
-        await test4();
-        await test5();
-        await test6();
+        await test_creazioneSondaggio();
+        await test_cancellazioneSondaggio();
+        await test_operazioniVarie();
+        await test_creazioneRecensione();
+        await test_axiosDelete();
+        await test_axiosGet();
 
-        await createSurveysForTesting();
-        await getGID();
-        await showSurveys();
-        await showSurveysForUser();
-        await createAnswersForTesting()
+        await test_creazioneSondaggiPerTesting();
+        await test_getSondaggio();
+        await test_getSondaggi();
+        await test_getSondaggioUtente();
+        await test_creazioneRispostePerTesting();
         await showResults();
-        await deleteSurvey()
-        await store();
+        await test_eliminazioneSondaggio()
+        await test_inserimentoSondaddio();
         await storeReview();
         await getFromReq();
         await testMember();
 
-        await deleteAll();
+        await test_restore();
 
     } catch (e) { console.error(e); }
 

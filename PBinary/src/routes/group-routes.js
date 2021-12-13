@@ -1214,7 +1214,6 @@ router.get('/:id/activities', (req, res, next) => {
             });
 
             act.avgReviews = cnt !== 0 ? round(sum / cnt, 1) : -1;
-            console.log(act);
             
           }
           
