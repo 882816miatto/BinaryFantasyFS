@@ -65,7 +65,7 @@ class CreateSurveyScreen extends React.Component {
       canAddQuestion = questions.every(q => !!q.title && !!q.typeOfQuestion && q.questionOptions && q.questionOptions.length && q.questionOptions.length > 1 && q.questionOptions.every(o => !!o.value));
     }
 
-    if (canAddQuestion && surveyTitle) {
+    if (canAddQuestion && surveyTitle && questions.length) {
       canCreateSurvey = true;
     }
 

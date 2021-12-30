@@ -1322,6 +1322,57 @@ const en = {
   },
   framilyListItem: {
     delete: "Delete framily"
+  },
+  //Surveys
+  surveyScreen: {
+    backNavTitle: "Fill out survey",
+    saveBtn: "Save",
+    savedAnswersMsg: "Replies sent"
+  },
+  surveyQuestionEditable: {
+    questionTitle: "Question title",
+    radio: "Single choice",
+    checkBox: "Multiple choice",
+    optionText: "Option text ",
+    addOption: "Add option",
+    emptyQuestionMsg: "Empty question, click to edit"
+  },
+  createSurveyScreen: {
+    backNavTitle: "New survey creation",
+    placeholderTitle: "Survey title",
+    addQuestion: "Add question",
+    createSurvey: "Create survey",
+    createdSurveyMsg: "Survey created"
+  },
+  surveyListScreen: {
+    backNavTitle: "My surveys",
+    noSurveys: "No surveys",
+  },
+  surveyDetailScreen: {
+    backNavTitle: "Survey details"
+  },
+  //Reviews
+  reviewCard: {
+    parent: "Parent",
+    organizer: "Organizer",
+  },
+  reviewCreateUpdateDialog: {
+    writeReview: "Write review",
+    yourExperience: "Your experience",
+    writeCommentPlaceholder: "Write a review...",
+    delete: "Delete",
+    cancel: "Cancel",
+    publish: "Publish",
+    reviewCreatedMsg: "Review created",
+  },
+  reviewList: {
+    reviews: "Reviews",
+    avgVote: "Average vote",
+    writeReviewBtn: "Write a review",
+    orderBy: "Order by",
+    mostRecent: "Most recent",
+    best: "Best",
+    worst: "Worst",
   }
 };
 
@@ -2605,7 +2656,58 @@ const nl = {
     tooShortErr: "Gebruik ten minste 8 tekens."
   },
   calendar: { userCalendar: "Mijn kalender", groupCalendar: "Groep kalender" },
-  framilyListItem: { delete: "" }
+  framilyListItem: { delete: "" },
+  //Surveys
+  surveyScreen: {
+    backNavTitle: "Enquête invullen",
+    saveBtn: "Sparen",
+    savedAnswersMsg: "Antwoorden verzonden"
+  },
+  surveyQuestionEditable: {
+    questionTitle: "Vraag Titel",
+    radio: "Enkele keuze",
+    checkBox: "Meerkeuze",
+    optionText: "Optie tekst ",
+    addOption: "Optie toevoegen",
+    emptyQuestionMsg: "Lege vraag, klik om te bewerken"
+  },
+  createSurveyScreen: {
+    backNavTitle: "Nieuwe enquête maken",
+    placeholderTitle: "Titel enquête",
+    addQuestion: "Vraag toevoegen",
+    createSurvey: "Enquête maken",
+    createdSurveyMsg: "Enquête gemaakt"
+  },
+  surveyListScreen: {
+    backNavTitle: "Mijn enquêtes",
+    noSurveys: "Geen vragenlijsten",
+  },
+  surveyDetailScreen: {
+    backNavTitle: "Enquêtedetails"
+  },
+  //Reviews
+  reviewCard: {
+    parent: "Ouder",
+    organizer: "Organisator",
+  },
+  reviewCreateUpdateDialog: {
+    writeReview: "Schrijf recensie",
+    yourExperience: "Jouw ervaring",
+    writeCommentPlaceholder: "Schrijf een recensie...",
+    delete: "Verwijderen",
+    cancel: "Annuleren",
+    publish: "Publiceren",
+    reviewCreatedMsg: "Review gemaakt",
+  },
+  reviewList: {
+    reviews: "Beoordelingen",
+    avgVote: "Gemiddelde stem",
+    writeReviewBtn: "Schrijf een recensie",
+    orderBy: "Bestel op",
+    mostRecent: "Meest recente",
+    best: "Best",
+    worst: "Slechtst",
+  }
 };
 
 const it = {
@@ -5248,7 +5350,58 @@ const el = {
     userCalendar: "Το ημερολόγιο μου",
     groupCalendar: "Το ημερολόγιο της ομάδας"
   },
-  framilyListItem: { delete: "" }
+  framilyListItem: { delete: "" },
+  //Surveys
+  surveyScreen: {
+    backNavTitle: "Συμπληρώστε την έρευνα",
+    saveBtn: "Σώσει",
+    savedAnswersMsg: "Απαντήσεις στάλθηκαν"
+  },
+  surveyQuestionEditable: {
+    questionTitle: "Τίτλος ερώτησης",
+    radio: "Ενιαία επιλογή",
+    checkBox: "Πολλαπλή επιλογή",
+    optionText: "Κείμενο επιλογής ",
+    addOption: "Προσθήκη επιλογής",
+    emptyQuestionMsg: "Κενή ερώτηση, κάντε κλικ για επεξεργασία"
+  },
+  createSurveyScreen: {
+    backNavTitle: "Δημιουργία νέας έρευνας",
+    placeholderTitle: "Τίτλος έρευνας",
+    addQuestion: "Προσθήκη ερώτησης",
+    createSurvey: "Δημιουργία έρευνας",
+    createdSurveyMsg: "Η έρευνα δημιουργήθηκε"
+  },
+  surveyListScreen: {
+    backNavTitle: "Οι δημοσκοπήσεις μου",
+    noSurveys: "Δεν δημιουργήθηκε δημοσκόπηση",
+  },
+  surveyDetailScreen: {
+    backNavTitle: "Λεπτομέρεια έρευνας"
+  },
+  //Reviews
+  reviewCard: {
+    parent: "Γονεύς",
+    organizer: "Διευθυντής",
+  },
+  reviewCreateUpdateDialog: {
+    writeReview: "Γράψε κριτική",
+    yourExperience: "Η εμπειρία σας",
+    writeCommentPlaceholder: "Γράψτε μια κριτική...",
+    delete: "Διαγράφω",
+    cancel: "Ματαίωση",
+    publish: "Δημοσιεύω",
+    reviewCreatedMsg: "Η κριτική δημιουργήθηκε",
+  },
+  reviewList: {
+    reviews: "Κριτικές",
+    avgVote: "Μέση βαθμολογία",
+    writeReviewBtn: "Γράψτε μια κριτική",
+    orderBy: "Ταξινόμηση κατά",
+    mostRecent: "Αργότερο",
+    best: "Καλύτερος",
+    worst: "Χειριστός",
+  }
 };
 
 const hu = {
@@ -6586,6 +6739,57 @@ const hu = {
   },
   framilyListItem: {
     delete: "Család törlése"
+  },
+  //Surveys
+  surveyScreen: {
+    backNavTitle: "Kérdőív kitöltése",
+    saveBtn: "Megment",
+    savedAnswersMsg: "Válaszok elküldve"
+  },
+  surveyQuestionEditable: {
+    questionTitle: "Kérdés címe",
+    radio: "Egyetlen választás",
+    checkBox: "Több választási lehetőség",
+    optionText: "Lehetőség szövege ",
+    addOption: "Opció hozzáadása",
+    emptyQuestionMsg: "Üres kérdés, kattintson a szerkesztéshez"
+  },
+  createSurveyScreen: {
+    backNavTitle: "Új felmérés létrehozása",
+    placeholderTitle: "Felmérés címe",
+    addQuestion: "Kérdés hozzáadása",
+    createSurvey: "Kérdőív létrehozása",
+    createdSurveyMsg: "Felmérés létrehozva"
+  },
+  surveyListScreen: {
+    backNavTitle: "A szavazásaim",
+    noSurveys: "Nincs szavazás létrehozva",
+  },
+  surveyDetailScreen: {
+    backNavTitle: "Felmérés részletei"
+  },
+  //Reviews
+  reviewCard: {
+    parent: "Szülő",
+    organizer: "Menedzser",
+  },
+  reviewCreateUpdateDialog: {
+    writeReview: "Írj véleményt",
+    yourExperience: "Az Ön tapasztalata",
+    writeCommentPlaceholder: "Írja meg a véleményét...",
+    delete: "Töröl",
+    cancel: "Megszünteti",
+    publish: "Közzététel",
+    reviewCreatedMsg: "Vélemény létrehozva",
+  },
+  reviewList: {
+    reviews: "Vélemények",
+    avgVote: "Átlagos értékelés",
+    writeReviewBtn: "Írja meg a véleményét",
+    orderBy: "Sorrend",
+    mostRecent: "Legújabb",
+    best: "Legjobb",
+    worst: "Legrosszabb",
   }
 };
 
@@ -7674,6 +7878,57 @@ const fr = {
   },
   "framilyListItem": {
     "delete": "Supprimer famille"
+  },
+  //Surveys
+  surveyScreen: {
+    backNavTitle: "Remplir un sondage",
+    saveBtn: "Sauvegarder",
+    savedAnswersMsg: "Réponses envoyées"
+  },
+  surveyQuestionEditable: {
+    questionTitle: "Titre de question",
+    radio: "Choix unique",
+    checkBox: "Choix multiple",
+    optionText: "Texte d'option ",
+    addOption: "Ajouter une option",
+    emptyQuestionMsg: "Question vide, cliquez pour modifier"
+  },
+  createSurveyScreen: {
+    backNavTitle: "Création d'un nouveau sondage",
+    placeholderTitle: "Titre de l'enquête",
+    addQuestion: "Ajouter une question",
+    createSurvey: "Créer une enquête",
+    createdSurveyMsg: "Enquête créée"
+  },
+  surveyListScreen: {
+    backNavTitle: "Mes sondages",
+    noSurveys: "Aucun sondage créé",
+  },
+  surveyDetailScreen: {
+    backNavTitle: "Détail de l'enquête"
+  },
+  //Reviews
+  reviewCard: {
+    parent: "Parent",
+    organizer: "Directeur",
+  },
+  reviewCreateUpdateDialog: {
+    writeReview: "Ecrire une critique",
+    yourExperience: "Ton expérience",
+    writeCommentPlaceholder: "Écrire une critique...",
+    delete: "Supprimer",
+    cancel: "Annuler",
+    publish: "Publique",
+    reviewCreatedMsg: "Avis créé",
+  },
+  reviewList: {
+    reviews: "Commentaires",
+    avgVote: "Note moyenne",
+    writeReviewBtn: "Écrire une critique",
+    orderBy: "Trier par",
+    mostRecent: "Dernier",
+    best: "Meilleur",
+    worst: "Pire",
   }
 }
 

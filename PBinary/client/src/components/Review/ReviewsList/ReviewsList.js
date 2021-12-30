@@ -176,7 +176,7 @@ class ReviewsList extends React.Component {
                                   open={createDialogOpen}
                                   review={reviewToEdit}
                                   onClose={this.handleClose}
-                                  onReviewCreated={this.fetchReviews} />
+                                  onReviewCreated={this.fetchActivity} />
 
       </div>
     );

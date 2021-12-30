@@ -48,6 +48,7 @@
     align-items: center;
     flex-direction: column;
     padding-bottom: 40px;
+    grid-row: 1 / -1;
 }
 
 .surveys-list__empty-state img {

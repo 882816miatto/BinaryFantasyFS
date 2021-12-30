@@ -108,8 +108,8 @@ class SurveyQuestionEditable extends React.Component {
       <>
         <div className={
           focused
-          ? 'survey-question survey-question--focused'
-          : 'survey-question'
+          ? 'survey-question survey-question--editable survey-question--focused'
+          : 'survey-question survey-question--editable'
         }
              onClick={this.onGainedFocus}>
           {focused && editable ? (
