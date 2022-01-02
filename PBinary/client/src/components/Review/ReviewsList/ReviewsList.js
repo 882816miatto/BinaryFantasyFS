@@ -105,7 +105,7 @@ class ReviewsList extends React.Component {
   onReviewEdit = (review) => {
     this.setState({
       createDialogOpen: true,
-      reviewToEdit: review,
+      reviewToEdit:  { ...review },
     });
   };
 

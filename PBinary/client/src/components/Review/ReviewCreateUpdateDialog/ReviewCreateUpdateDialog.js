@@ -34,10 +34,6 @@ class ReviewCreateUpdateDialog extends React.Component {
     );
   };
 
-  /*handleListItemClick = (value) => {
-    this.state.onClose(value);
-  };*/
-
   shouldComponentUpdate(nextProps, nextState, nextContext) {
     if (nextProps.open !== this.state.open) {
       this.setState({
@@ -63,12 +59,48 @@ class ReviewCreateUpdateDialog extends React.Component {
     });
   };
 
-  createReview = () => {
+  convertImageRelativePathToBase64 = (relativeFilePath) => {
+    // convert image relative path to base64 string
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", relativeFilePath, true);
+      xhr.responseType = "blob";
+      xhr.onload = function (e) {
+        if (this.status === 200) {
+          const reader = new FileReader();
+          reader.onload = function () {
+            resolve(reader.result);
+          };
+          reader.readAsDataURL(this.response);
+        } else {
+          reject(this.statusText);
+        }
+      };
+      xhr.send();
+    });
+  }
+
+  base64toFile = (dataurl, filename) => {
+    const arr = dataurl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+
+    let n = bstr.length;
+
+    const u8arr = new Uint8Array(n);
+    while (n) {
+      n -= 1;
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
+  createReview = async () => {
     const user_id = JSON.parse(localStorage.getItem("user")).id;
     const { match } = this.props;
     const { activityId } = match.params;
     const activity_id = activityId;
-    const {evaluation, comment} = this.state.newReview;
+    const { evaluation, comment, images } = this.state.newReview;
     const newReview = {
       activity_id,
       user_id,
@@ -76,24 +108,49 @@ class ReviewCreateUpdateDialog extends React.Component {
       comment,
     };
 
-    ReviewDAO.insertOneReview(newReview).then(response => {
+    const formData = new FormData();
+
+    Object.keys(newReview).forEach(field => {
+      formData.append(field, newReview[field]);
+    });
+
+    if (images.length) {
+      //if images has string is on edit
+      if (images.some(i => typeof i === "string")) {
+        let base64Images = [];
+        // images is an array of relative paths
+        // convert every image path into base64
+        base64Images = await Promise.all(images.map(i => i.size ? i : this.convertImageRelativePathToBase64(i)));
+        // convert base64 to file
+        base64Images = base64Images.map((image, index) => {
+          if (typeof image !== "string") {
+            return image
+          } else {
+            const fileName = images[index].split("/").pop();
+            return this.base64toFile(image, fileName);
+          }
+        });
+
+        for (let image of base64Images) {
+          formData.append("images", image);
+        }
+      } else {
+        for (let image of images) {
+          formData.append("images", image);
+        }
+      }
+    }
+
+    ReviewDAO.insertOneReview(formData).then(response => {
       const { onReviewCreated } = this.props;
       this.setState({
         snackbarOpen: true,
       }, () => setTimeout(() => {
-        this.setState({open: false});
+        this.setState({ open: false, snackbarOpen: false });
         onReviewCreated();
       }, 2500));
     })
     //TODO in caso di errore mostrare la snackbar con l'errore senza chiudere la modale
-  };
-
-  handleDelete = () => {
-    // TODO
-  };
-
-  deleteReview = () => {
-    // TODO
   };
 
   handleSnackbarClose = () => {
@@ -152,7 +209,7 @@ class ReviewCreateUpdateDialog extends React.Component {
             />
           </div>
           <div className="review-create__footer">
-            {newReview.user ? (
+            {/*{newReview.user ? (
               <Button
                 label={texts.delete}
                 color="error"
@@ -160,7 +217,8 @@ class ReviewCreateUpdateDialog extends React.Component {
               />
             ) : (
               <div />
-            )}
+            )}*/}
+            <div />
             <div className="review-create__footer-right">
               <Button
                 label={texts.cancel}

@@ -7,6 +7,34 @@ const User = require('../models/user')
 const Image = require('../models/image')
 
 const ReviewDoc = require('../docsHelper/reviewDoc');
+const objectid = require('objectid');
+
+// file upload code
+const multer = require('multer');
+const DIR = './images/reviews';
+const { v4: uuidv4 } = require('uuid');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname.toLowerCase().split(' ').join('-');
+    cb(null, uuidv4() + '-' + fileName);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+    }
+  }
+});
 
 // TODO: check member
 
@@ -44,7 +72,8 @@ router.get('/get-reviews/:activityId', async (req, res) => {
 
                 evaluation: rev.evaluation,
                 comment: rev.comment ? rev.comment : '',
-                created_at: rev.createdAt
+                created_at: rev.createdAt,
+                images: rev.images
 
             };
 
@@ -58,39 +87,56 @@ router.get('/get-reviews/:activityId', async (req, res) => {
 
 });
 
-router.post('/store', async (req, res) => {
+router.post('/store',
+  upload.array('images', 15),
+  async (req, res) => {
 
-    if (!req.user_id) { 
-        return res.status(401).send('Not authenticated'); 
+    //check why
+    const { files } = req;
+
+    if (!req.user_id) {
+      return res.status(401).send('Not authenticated');
     }
 
-    if (!req.body || !req.body.review) {
-        return res.status(400).send('Bad request');
+    if (!req.body) {
+      return res.status(400).send('Bad request, review is missing');
+    }
+
+    if (files) {
+      req.body.images = [];
+      files.forEach(photo => {
+        req.body.images.push({
+          image_id: objectid(),
+          path: `/images/reviews/${photo.filename}`
+        });
+      });
     }
 
     let review;
 
     try {
+      review = new ReviewDoc(req.body);
 
-        review = new ReviewDoc(req.body.review);
-
-        if (review.user_id !== req.user_id) {
-            return res.status(400).send('Bad request')
-        }
-
-    } catch (e) { return res.status(400).send(e); }
+      if (review.user_id !== req.user_id) {
+        return res.status(400).send('Bad request, user_id does not match');
+      }
+    } catch (e) {
+      return res.status(400).send(e);
+    }
 
     try {
+      const reviewToInsert = review.encodeForSaving();
 
-        const reviewToInsert = review.encodeForSaving();
+      await Review.findOneAndUpdate({
+        activity_id: review.activity_id,
+        user_id: review.user_id
+      }, reviewToInsert, { upsert: true });
 
-        await Review.findOneAndUpdate({activity_id: review.activity_id, user_id: review.user_id}, reviewToInsert, {upsert: true});
-
-        return res.status(200).send('Review has been inserted successfully');
-
-    } catch( e) { return res.status(500).send(e); }
-    
-});
+      return res.status(200).send('Review has been inserted successfully');
+    } catch (e) {
+      return res.status(500).send(e);
+    }
+  });
 
 router.delete('/delete', async (req, res) => {
 

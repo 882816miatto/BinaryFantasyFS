@@ -8,6 +8,7 @@ import withLanguage   			from '../../LanguageContext';
 import dayjs from 'dayjs'
 import relativeTime from "dayjs/plugin/relativeTime"
 import updateLocale from "dayjs/plugin/updateLocale"
+import ImagesViewer from '../../shared/ImagesViewer/ImagesViewer';
 
 class ReviewCard extends React.Component {
 	constructor(props) {
@@ -15,29 +16,33 @@ class ReviewCard extends React.Component {
 		this.state = {
 			review: props.review,
 			onEditClick: props.onEditClick,
-			canShowEdit: true // TODO: solo se l'utente loggato è l'autore della review
+			canShowEdit: true, // TODO: solo se l'utente loggato è l'autore della review
+			imageGalleryOpened: false,
 		};
 
 		dayjs.extend(relativeTime);
 		dayjs.extend(updateLocale)
 
+		const { language } = props;
+		const texts = Texts[language].reviewCard;
+
 		dayjs.updateLocale('en', {
-			relativeTime: {
-				future: "tra %s",
-				past: "%s fa",
-				s: 'qualche secondo',
-				m: "un minuto",
-				mm: "%d minuti",
-				h: "un'ora",
-				hh: "%d ore",
-				d: "un giorno",
-				dd: "%d giorni",
-				M: "un mese",
-				MM: "%d mesi",
-				y: "un anno",
-				yy: "%d anni"
-			}
-		})
+		relativeTime: {
+			future: texts.futureTimeMark,
+			past: texts.pastTimeMark,
+			s: texts.aFewSeconds,
+			m: texts.aMinute,
+			mm: texts.xMinutes,
+			h: texts.anHour,
+			hh: texts.xHours,
+			d: texts.aDay,
+			dd: texts.xDays,
+			M: texts.aMonth,
+			MM: texts.xMonths,
+			y: texts.aYear,
+			yy: texts.xYears,
+		}
+		});
 	}
 
 	componentDidMount() {
@@ -55,34 +60,49 @@ class ReviewCard extends React.Component {
 	}
 
 	render() {
-		const { review, onEditClick, canShowEdit } = this.state;
+		const { review, onEditClick, canShowEdit, imageGalleryOpened, clickedPictureIndex } = this.state;
 		const { language, history } = this.props;
     	const texts = Texts[language].reviewCard;
 		return (
-			<div className="review-card">
-				<div className="review-card__header">
-					<div className="review-card__avatar" style={{backgroundImage: 'url('+ review.user.avatar +')'}} />
-					<div className="review-card__user">
-						<p className="review-card__user__name">{review.user.role === 'organizer' && <i className="fas fa-user-shield"/>}<strong>{review.user.given_name}</strong></p>
-						<p>{review.user.role === 'parent' ? texts.parent : texts.organizer}</p>
+			<>
+				<div className="review-card">
+					<div className="review-card__header">
+						<div className="review-card__avatar" style={{backgroundImage: 'url('+ review.user.avatar +')'}} />
+						<div className="review-card__user">
+							<p className="review-card__user__name">{review.user.role === 'organizer' && <i className="fas fa-user-shield"/>}<strong>{review.user.given_name}</strong></p>
+							<p>{review.user.role === 'parent' ? texts.parent : texts.organizer}</p>
+						</div>
+						{canShowEdit ? <Button type="icon" iconClass="fas fa-pen" color="secondary" onClick={onEditClick} /> : <div></div>}
 					</div>
-					{canShowEdit ? <Button type="icon" iconClass="fas fa-pen" color="secondary" onClick={onEditClick} /> : <div></div>}
-				</div>
-				<div className="review-card__evaluation">
-					<ReviewDots evaluation={review.evaluation} />
-					<p>{this.getTimestamp(review.created_at)}</p>
-				</div>
-				<div className="review-card__text">
-					{review.comment}
-				</div>
-				{!!review.images && !!review.images.length && (
-					<div className="review-card__gallery">
-						{review.images.map((image, i) => (
-								<div key={i} className="review-card__gallery-item" style={{ backgroundImage: 'url(' + image + ')'}}></div>
-						))}
+					<div className="review-card__evaluation">
+						<ReviewDots evaluation={review.evaluation} />
+						<p>{this.getTimestamp(review.created_at)}</p>
 					</div>
+					<div className="review-card__text">
+						{review.comment}
+					</div>
+					{!!review.images && !!review.images.length && (
+						<div className="review-card__gallery">
+							{review.images.map((image, i) => (
+									<div key={i} 
+										onClick={() => this.setState({ clickedPictureIndex: i, imageGalleryOpened: true })}
+										className="review-card__gallery-item" 
+										style={{ backgroundImage: 'url(' + image.path + ')'}}/>
+							))}
+						</div>
+					)}
+				</div>
+
+				{!!review.images && !!review.images.length && clickedPictureIndex !== -1 && clickedPictureIndex !== undefined && (
+					<ImagesViewer urls={review.images}
+								clickedPictureIndex={clickedPictureIndex}
+								open={!!imageGalleryOpened}
+								onClose={() => this.setState({
+									imageGalleryOpened: false,
+									clickedPictureIndex: undefined
+								})} />
 				)}
-			</div>
+			</>
 		);
 	}
 

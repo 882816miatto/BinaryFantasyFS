@@ -15,6 +15,10 @@ module.exports = class ReviewDoc {
         if (doc.comment)
             this.comment = doc.comment;
 
+        if (doc.images) {
+            this.images = doc.images;
+        }
+
     }
 
 

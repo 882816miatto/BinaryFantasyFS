@@ -6,7 +6,6 @@ class ImagePicker extends React.Component {
 
 	constructor(props) {
 		super(props);
-		// TODO: ho dato per scontato che le immagini siano degli url quando sei in input
 		this.state = {
 			pictures: props.pictures || [],
 			previews: props.pictures || [],
@@ -17,13 +16,24 @@ class ImagePicker extends React.Component {
 		this.inputRef = React.createRef();
 	}
 
+	componentDidMount() {
+		if (this.state.pictures && this.state.pictures.length) {
+			if (this.state.pictures.some(p => p.image_id)) {
+				//pictures are file type preview are only path
+				this.setState({
+					pictures: this.state.pictures.map(p => p.path),
+					previews: this.state.pictures.map(p => p.path),
+				});
+			}
+		}
+	}
+
 	handleFilesChange = (event) => {
 		this.updateImages(Array.from(event.target.files));
 	};
 
-	updateImages = (files) => {
-		console.log(files)
-		const newPreviews = [];
+	updateImages = (files, replaceAll) => {
+		const newPreviews = replaceAll ? [] : [...this.state.previews];
 		Array.from(files).forEach(file => {
 			if (typeof file !== 'string') {
 				newPreviews.push(URL.createObjectURL(file));
@@ -33,17 +43,16 @@ class ImagePicker extends React.Component {
 		});
 		this.setState({
 			previews: newPreviews,
-			pictures: files,
+			pictures: replaceAll ? files : [...this.state.pictures, ...files],
 		}, () => {
-			console.log(this.state);
 			this.state.imageOutput(this.state.pictures);
 		});
-	}
-
+	};
+	
 	removeImage = (imageIndex) => {
 		const currentPictures = this.state.pictures.filter((p, i) => i !== imageIndex);
-		this.updateImages(currentPictures);
-	}
+		this.updateImages(currentPictures, true);
+	};
 
 	render() {
 		const { previews } = this.state;
