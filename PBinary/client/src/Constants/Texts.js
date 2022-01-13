@@ -1336,6 +1336,7 @@ const en = {
     cancel: 'Cancel',
     publish: 'Publish',
     reviewCreatedMsg: 'Review created',
+    reviewUpdatedMsg: 'Review updated',
   },
   reviewList: {
     reviews: 'Reviews',
@@ -2638,6 +2639,7 @@ const nl = {
     cancel: 'Annuleren',
     publish: 'Publiceren',
     reviewCreatedMsg: 'Review gemaakt',
+    reviewUpdatedMsg: 'Review bijgewerkt',
   },
   reviewList: {
     reviews: 'Beoordelingen',
@@ -3958,6 +3960,7 @@ const it = {
     cancel: 'Annulla',
     publish: 'Pubblica',
     reviewCreatedMsg: 'Recensione creata',
+    reviewUpdatedMsg: 'Recensione aggiornata',
   },
   reviewList: {
     reviews: 'Recensioni',
@@ -5272,6 +5275,7 @@ const el = {
     cancel: 'Ματαίωση',
     publish: 'Δημοσιεύω',
     reviewCreatedMsg: 'Η κριτική δημιουργήθηκε',
+    reviewUpdatedMsg: 'Ενημερωμένη κριτική'
   },
   reviewList: {
     reviews: 'Κριτικές',
@@ -6634,6 +6638,7 @@ const hu = {
     cancel: 'Megszünteti',
     publish: 'Közzététel',
     reviewCreatedMsg: 'Vélemény létrehozva',
+    reviewUpdatedMsg: 'Frissített értékelés'
   },
   reviewList: {
     reviews: 'Vélemények',
@@ -7871,6 +7876,7 @@ const fr = {
     cancel: 'Annuler',
     publish: 'Publique',
     reviewCreatedMsg: 'Avis créé',
+    reviewUpdatedMsg: 'Avis mis à jour',
   },
   reviewList: {
     reviews: 'Commentaires',

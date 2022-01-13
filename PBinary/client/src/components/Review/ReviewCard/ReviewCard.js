@@ -16,7 +16,7 @@ class ReviewCard extends React.Component {
 		this.state = {
 			review: props.review,
 			onEditClick: props.onEditClick,
-			canShowEdit: true, // TODO: solo se l'utente loggato è l'autore della review
+			canShowEdit: true,
 			imageGalleryOpened: false,
 		};
 

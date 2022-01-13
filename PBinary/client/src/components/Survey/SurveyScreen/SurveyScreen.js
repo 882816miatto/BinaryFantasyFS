@@ -1,7 +1,7 @@
-import React            from 'react';
-import PropTypes        from 'prop-types';
-import Texts            from '../../../Constants/Texts';
-import LoadingSpinner   from '../../LoadingSpinner';
+import React          from 'react';
+import PropTypes      from 'prop-types';
+import Texts          from '../../../Constants/Texts';
+import LoadingSpinner from '../../LoadingSpinner';
 import SurveyDAO      from '../../../DAOs/surveyDAO';
 import AnswerDAO      from '../../../DAOs/answerDAO';
 import Button         from '../../shared/Button/Button';
@@ -10,7 +10,7 @@ import Log            from '../../Log';
 import BackNavigation from '../../BackNavigation';
 import './SurveyScreen.css';
 import SurveyQuestion from '../SurveyQuestion/SurveyQuestion';
-import { Snackbar }           from '@material-ui/core';
+import { Snackbar }   from '@material-ui/core';
 
 class SurveyScreen extends React.Component {
   constructor(props) {
@@ -18,6 +18,7 @@ class SurveyScreen extends React.Component {
     this.state = {
       fetchedActivity: false,
       snackbarOpen: false,
+      snackbarMessage: '',
       answers: [],
     };
   }
@@ -25,43 +26,27 @@ class SurveyScreen extends React.Component {
   componentDidMount() {
     const { match } = this.props;
     const { surveyId } = match.params;
-    SurveyDAO.getSurveyById(surveyId)
-             .then((response) => {
-               const { title, questions, status } = response.data;
-               this.setState({
-                 fetchedSurvey: true,
-                 title,
-                 questions,
-                 status,
-               });
-               // initializeAnswers(questions);
-             })
-             .catch((error) => {
-               Log.error(error);
-               this.setState({
-                 fetchedSurvey: true,
-                 title: '',
-                 questions: [],
-                 status: false,
-               });
-             });
+    SurveyDAO
+      .getSurveyById(surveyId)
+      .then((response) => {
+        const { title, questions, status } = response.data;
+        this.setState({
+          fetchedSurvey: true,
+          title,
+          questions,
+          status,
+        });
+      })
+      .catch((error) => {
+        Log.error(error);
+        this.setState({
+          fetchedSurvey: true,
+          title: '',
+          questions: [],
+          status: false,
+        });
+      });
   }
-
-  // initializeAnswers = (questions) => {
-  //     // TODO 6: faccio a finta che la struttura dati sia:
-  //     // -  ogni question ha un campo questionAnswers che è un array che contiene gli id delle risposte date tipo [1, 5, 4]
-  //     const answers = {};
-  //     if (questions && questions.length) {
-  //         questions.forEach(question => {
-  //             if (question.questionAnswers && question.questionAnswers.length) {
-  //                 answers[question.id] = question.questionAnswers;
-  //             }
-  //         })
-  //     }
-  //     this.setState({
-  //         answers
-  //     });
-  // }
 
   handleSnackbarClose = () => {
     this.setState({
@@ -84,21 +69,36 @@ class SurveyScreen extends React.Component {
       user_id: userId,
     };
 
-    AnswerDAO.insertAnswers(surveyAnswers).then(() => {
-      const { history } = this.props;
-      this.setState({
-        snackbarOpen: true,
-      }, () => setTimeout(() => history.goBack(), 2500));
-    });
-    //TODO mostrare snackbar anche in caso di errore con messaggio senza andare indietro con goback()
-  };;
+    const { language } = this.props;
+    const texts = Texts[language].surveyScreen;
+
+    AnswerDAO
+      .insertAnswers(surveyAnswers)
+      .then(() => {
+        const { history } = this.props;
+        this.setState({
+          snackbarOpen: true,
+          snackbarMessage: texts.savedAnswersMsg,
+        }, () => setTimeout(() => history.goBack(), 2500));
+      }, error => {
+        this.setState({
+          snackbarOpen: true,
+          snackbarMessage: error.message,
+        }, () => {
+          setTimeout(() => {
+            this.setState({
+              snackbarOpen: false,
+            })
+          }, 2500)
+        })
+      });
+  };
 
   onQuestionAnswerChanged = (newAnswers, questionId) => {
     const { answers, questions } = this.state;
     if (newAnswers.length) {
       answers[questionId] = newAnswers;
-    }
-    else {
+    } else {
       delete answers[questionId];
     }
 
@@ -106,11 +106,11 @@ class SurveyScreen extends React.Component {
       answers,
       canSave: Object.keys(answers).length === questions.length
     }, () => console.log(this.state.answers));
-  }
+  };
 
 
   render() {
-    const { fetchedSurvey, title, questions, status, answers, snackbarOpen, canSave } = this.state;
+    const { fetchedSurvey, title, questions, status, answers, snackbarOpen, snackbarMessage, canSave } = this.state;
     const { language, history } = this.props;
     const texts = Texts[language].surveyScreen;
 
@@ -135,7 +135,7 @@ class SurveyScreen extends React.Component {
                     open={snackbarOpen}
                     autoHideDuration={6000}
                     onClose={this.handleSnackbarClose}
-                    message={texts.savedAnswersMsg}/>
+                    message={snackbarMessage} />
           {status && (
             <div className="survey-screen__footer">
               <Button color="primary"
