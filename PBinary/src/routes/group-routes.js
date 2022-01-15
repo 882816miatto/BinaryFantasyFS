@@ -1223,41 +1223,6 @@ router.get('/:id/activities', (req, res, next) => {
     .catch(next)
 })
 
-/*
-
-New route for Progetto Ingegneria del software 2021-22 Unive
-GetSurveyByGroupId
-
-Given a groupId return a list of surveys that have not been answsered by the current user yet
-
-TODO DELETE THIS ROUTE HERE
-
-*/
-
-router.get('/:groupId/show-surveys-by-group-id', async (req, res) => {
-
-  if (!req.user_id) {
-    return res.status(401).send('Not authenticated');
-  }
-
-  const group_id = req.params.groupId;
-  const user_id = req.user_id;
-
-  try {
-
-    let surveysData = await Survey.find({group_id: group_id});
-    let answersData = await Answer.find({user_id: user_id});
-    let idSurveySet = new Set(answersData.map(doc => doc.survey_id));
-
-    surveysData = surveysData.filter(doc => idSurveySet.has(doc.id) === false)
-      .map(doc => [doc.title, doc.id]);
-
-    return res.status(200).send(surveysData);
-
-  } catch (e) {return res.status(500).send(e); }
-
-});
-
 router.patch('/:id/activities/:activityId', async (req, res, next) => {
   if (!req.user_id) {
     return res.status(401).send('Not authenticated')

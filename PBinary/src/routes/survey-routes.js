@@ -8,9 +8,6 @@ const Member = require('../models/member')
 
 const SurveyDoc = require('../docsHelper/surveyDoc');
 
-// TODO check user_id === req.user_id
-// TODO check findMember like routes in group-routes
-
 router.post('/store', async (req, res) => {
 
     if (!req.user_id) { 

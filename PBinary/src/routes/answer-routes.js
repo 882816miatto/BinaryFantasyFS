@@ -6,9 +6,6 @@ const Answer = require('../models/answer')
 
 const AnswerDoc = require('../docsHelper/answerDoc');
 
-// TODO -> check user_id === req.user_id
-// TODO -> if only the creator can see the results, then check surveyIdCreator === req.user_id
-
 router.get('/show-answers-by-survey-id/:surveyId', async (req, res) => {
 
     if (!req.user_id) { 

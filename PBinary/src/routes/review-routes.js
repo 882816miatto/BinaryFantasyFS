@@ -36,8 +36,6 @@ const upload = multer({
   }
 });
 
-// TODO: check member
-
 router.get('/get-reviews/:activityId', async (req, res) => {
 
     if (!req.user_id) { 

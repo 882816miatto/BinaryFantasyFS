@@ -15,11 +15,6 @@ class ReviewDots extends React.Component {
 	}
 
 	handleDotsChange = (newValue) => {
-		const currentEvaluation = this.state.evaluation;
-		if (currentEvaluation === 1 && newValue === 1) {
-			newValue = 0;
-		}
-		//TODO: valutare se dare la possibilita' o meno di mettere evaluation a zero
 		this.state.dotsOutput(newValue);
 		this.setState({
 			evaluation: newValue,

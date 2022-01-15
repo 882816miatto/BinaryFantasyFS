@@ -197,11 +197,6 @@ router.get('/show-surveys-by-user-id/:id', async (req, res) => {
 
         let surveysData = await Survey.find({user_id: userId});
 
-        //  TODO
-        //  prendi la lista dei gruppi ai quali fa parte l'utente loggato e dentro ogni gruppo devono esserci i relativi sondaggi
-        //  per il grupppo basta l'id ed il nome, per i sondaggi id e titolo come li estrapoli gia vanno bene
-        //  devi anche filtrare i gruppi di modo da prendere solo quelli con sondaggi
-
         if (surveysData.length > 0) {
             surveysData = surveysData.map(doc => {
                 return {
