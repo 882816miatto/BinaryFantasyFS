@@ -399,7 +399,7 @@ class ActivityScreen extends React.Component {
 
   goToReviews = () => {
     const { history, match } = this.props;
-    const { groupId, activityId } = match.params;
+    const { activityId } = match.params;
     history.push("/" + activityId + "/reviews");
   };
 

@@ -82,7 +82,7 @@ class CreateSurveyScreen extends React.Component {
   };
 
   onQuestionDelete = (questionIdx) => {
-    let { questions, canAddQuestion } = this.state;
+    let { questions } = this.state;
     let newQuestions = [...questions];
     newQuestions = newQuestions.filter((q, i) => i !== questionIdx);
     this.setState(

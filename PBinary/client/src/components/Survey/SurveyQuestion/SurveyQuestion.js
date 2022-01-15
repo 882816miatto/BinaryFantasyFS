@@ -70,7 +70,7 @@ class SurveyQuestion extends React.Component {
 
   render() {
     const { language } = this.props;
-    const texts = Texts[language].surveyQuestion;
+    // const texts = Texts[language].surveyQuestion;
     const { questionAnswers, question } = this.state;
     return (
       <div className="survey-question">

@@ -1,14 +1,11 @@
 import React                   from 'react';
-import PropTypes, { objectOf } from 'prop-types';
+import PropTypes               from 'prop-types';
 import TextField               from '@material-ui/core/TextField';
 import Radio                   from '@material-ui/core/Radio';
 import RadioGroup              from '@material-ui/core/RadioGroup';
 import FormControlLabel        from '@material-ui/core/FormControlLabel';
 import FormControl             from '@material-ui/core/FormControl';
-import AddIcon                 from '@material-ui/icons/Add';
 import Button                  from '../../shared/Button/Button';
-import IconButton              from '@material-ui/core/IconButton';
-import DeleteIcon              from '@material-ui/icons/Delete';
 import Texts                  from "../../../Constants/Texts";
 import withLanguage            from '../../LanguageContext';
 import './SurveyQuestionEditable.css';

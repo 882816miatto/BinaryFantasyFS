@@ -70,7 +70,7 @@ class ImagePicker extends React.Component {
 									 <div className="image-picker__remove-img" onClick={() => this.removeImage(i)}>
 										 <i className="fas fa-times" />
 									 </div>
-									 <img src={file} alt="an image" />
+									 <img src={file} alt="a pic" />
 								 </div>
 						 ))}
 					 </div>

@@ -3,7 +3,6 @@ import PropTypes        from 'prop-types';
 import Texts            from '../../../Constants/Texts';
 import LoadingSpinner   from '../../LoadingSpinner';
 import SurveyDAO      from '../../../DAOs/surveyDAO';
-import AnswerDAO      from '../../../DAOs/answerDAO';
 import withLanguage   from '../../LanguageContext';
 import BackNavigation         from '../../BackNavigation';
 import Log            from '../../Log';
@@ -70,7 +69,7 @@ class SurveysListScreen extends React.Component {
                     </div>
                     ) : (
                         <div className="surveys-list__empty-state">
-                            <img src={emptyStateImage} />
+                            <img src={emptyStateImage} alt="" />
                             <p>{texts.noSurveys}</p>
                         </div>
                     )}

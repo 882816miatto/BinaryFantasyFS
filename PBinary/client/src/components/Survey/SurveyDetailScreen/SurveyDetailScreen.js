@@ -4,13 +4,10 @@ import Texts            from '../../../Constants/Texts';
 import LoadingSpinner   from '../../LoadingSpinner';
 import SurveyDAO      from '../../../DAOs/surveyDAO';
 import AnswerDAO      from '../../../DAOs/answerDAO';
-import Button         from '../../shared/Button/Button';
 import withLanguage   from '../../LanguageContext';
 import Log            from '../../Log';
 import BackNavigation from '../../BackNavigation';
 import './SurveyDetailScreen.css';
-import SurveyQuestion from '../SurveyQuestion/SurveyQuestion';
-import { Snackbar }           from '@material-ui/core';
 
 class SurveyDetailScreen extends React.Component {
   constructor(props) {

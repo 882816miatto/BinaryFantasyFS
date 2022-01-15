@@ -61,7 +61,7 @@ class ReviewCard extends React.Component {
 
 	render() {
 		const { review, onEditClick, canShowEdit, imageGalleryOpened, clickedPictureIndex } = this.state;
-		const { language, history } = this.props;
+		const { language } = this.props;
     	const texts = Texts[language].reviewCard;
 		return (
 			<>

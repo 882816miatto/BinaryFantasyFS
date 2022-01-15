@@ -170,7 +170,8 @@ class MyFamiliesShareHeader extends React.Component {
         history.push("/community");
         break;
       case "surveys":
-        history.push("/surveys")
+        history.push("/surveys");
+        break;
       default:
     }
   };
