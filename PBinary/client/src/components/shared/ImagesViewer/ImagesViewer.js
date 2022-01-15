@@ -78,7 +78,7 @@ class ImagesViewer extends React.Component {
           {currentImageIndex !== -1 && currentImageIndex !== undefined && (
             <>
               <img src={urls[currentImageIndex].path}
-                   alt="Picture" />
+                   alt="pic" />
               {urls.length > 1 && (
                 <div className="image-viewer__navigation">
                   <Button type="icon"

@@ -8,7 +8,7 @@ import FormGroup        from '@material-ui/core/FormGroup';
 import Checkbox         from '@material-ui/core/Checkbox';
 import PropTypes        from 'prop-types';
 import './SurveyQuestion.css';
-import Texts            from '../../../Constants/Texts';
+//import Texts            from '../../../Constants/Texts';
 import withLanguage     from '../../LanguageContext';
 
 class SurveyQuestion extends React.Component {
@@ -69,7 +69,7 @@ class SurveyQuestion extends React.Component {
   };
 
   render() {
-    const { language } = this.props;
+    //const { language } = this.props;
     // const texts = Texts[language].surveyQuestion;
     const { questionAnswers, question } = this.state;
     return (
