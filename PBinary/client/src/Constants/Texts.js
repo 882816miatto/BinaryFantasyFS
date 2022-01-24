@@ -1306,6 +1306,11 @@ const en = {
   surveyListScreen: {
     backNavTitle: 'My surveys',
     noSurveys: 'No surveys',
+    deleteSurveyDialogTitle: 'Delete survey',
+    deleteSurveyDialogBody: 'Are you sure you want to delete this survey and all its data?',
+    surveyDeletedMessage: 'Survey successfully deleted',
+    confirmDeleteSurvey: 'Confirm',
+    cancelDeleteSurvey: 'Cancel',
   },
   surveyDetailScreen: {
     backNavTitle: 'Survey details'
@@ -2609,6 +2614,11 @@ const nl = {
   surveyListScreen: {
     backNavTitle: 'Mijn enquêtes',
     noSurveys: 'Geen vragenlijsten',
+    deleteSurveyDialogTitle: 'Enquête verwijderen',
+    deleteSurveyDialogBody: 'Weet u zeker dat u deze enquête en al zijn gegevens wilt verwijderen?',
+    surveyDeletedMessage: 'Enquête succesvol verwijderd',
+    confirmDeleteSurvey: 'Bevestigen',
+    cancelDeleteSurvey: 'Annuleren',
   },
   surveyDetailScreen: {
     backNavTitle: 'Enquêtedetails'
@@ -3930,6 +3940,11 @@ const it = {
   surveyListScreen: {
     backNavTitle: 'I miei sondaggi',
     noSurveys: 'Nessun sondaggio creato',
+    deleteSurveyDialogTitle: 'Elimina sondaggio',
+    deleteSurveyDialogBody: "Sei sicuro di voler eliminare questo sondaggio e tutti i suoi dati?",
+    surveyDeletedMessage: 'Sondaggio eliminato con successo',
+    confirmDeleteSurvey: 'Conferma',
+    cancelDeleteSurvey: 'Annulla',
   },
   surveyDetailScreen: {
     backNavTitle: 'Dettaglio sondaggio'
@@ -5245,6 +5260,11 @@ const el = {
   surveyListScreen: {
     backNavTitle: 'Οι δημοσκοπήσεις μου',
     noSurveys: 'Δεν δημιουργήθηκε δημοσκόπηση',
+    deleteSurveyDialogTitle: 'Διαγραφή έρευνας',
+    deleteSurveyDialogBody: "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την έρευνα και όλα τα δεδομένα της;",
+    surveyDeletedMessage: 'Η έρευνα διαγράφηκε επιτυχώς',
+    confirmDeleteSurvey: 'Επιβεβαίωση',
+    cancelDeleteSurvey: 'Ακύρωση',
   },
   surveyDetailScreen: {
     backNavTitle: 'Λεπτομέρεια έρευνας'
@@ -6608,6 +6628,11 @@ const hu = {
   surveyListScreen: {
     backNavTitle: 'A szavazásaim',
     noSurveys: 'Nincs szavazás létrehozva',
+    deleteSurveyDialogTitle: "Felmérés törlése",
+    deleteSurveyDialogBody: "Biztosan törli ezt a felmérést és az összes adatát?",
+    surveyDeletedMessage: 'A felmérés sikeresen törölve',
+    confirmDeleteSurvey: 'Confirm',
+    cancelDeleteSurvey: 'Mégse',
   },
   surveyDetailScreen: {
     backNavTitle: 'Felmérés részletei'
@@ -7846,6 +7871,11 @@ const fr = {
   surveyListScreen: {
     backNavTitle: 'Mes sondages',
     noSurveys: 'Aucun sondage créé',
+    deleteSurveyDialogTitle: 'Delete survey',
+    deleteSurveyDialogBody: 'Êtes-vous sûr de vouloir supprimer cette enquête et toutes ses données ?',
+    surveyDeletedMessage: 'Enquête supprimée avec succès',
+    confirmDeleteSurvey: 'Confirmer',
+    cancelDeleteSurvey: 'Annuler',
   },
   surveyDetailScreen: {
     backNavTitle: 'Détail de l\'enquête'
