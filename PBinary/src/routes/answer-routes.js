@@ -6,6 +6,11 @@ const Answer = require('../models/answer')
 
 const AnswerDoc = require('../docsHelper/answerDoc');
 
+const round = (number, decimalPlace) => {
+    const factorOfTen = Math.pow(10, decimalPlace);
+    return Math.round(number * factorOfTen) / factorOfTen;
+}
+
 router.get('/show-answers-by-survey-id/:surveyId', async (req, res) => {
 
     if (!req.user_id) { 
@@ -68,7 +73,7 @@ router.get('/show-answers-by-survey-id/:surveyId', async (req, res) => {
                 let resultObj = {}
 
                 for (const prop of v.answers.keys()) {
-                    resultObj[prop] = Number(v.answers.get(prop)) / sum;
+                    resultObj[prop] = round(Number(v.answers.get(prop)) / sum, 2);
                 }
 
 
