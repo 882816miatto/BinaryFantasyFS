@@ -56,7 +56,7 @@ class SurveyDetailScreen extends React.Component {
                 <div className="survey-detail__answer-labels">
                     <div className="survey-detail__progress" style={{width: a.percentage*100 + '%'}}></div>
                     <p className="survey-detail__answer-label">{a.label}</p>
-                    <p className="survey-detail__answer-percentage">{a.percentage * 100 + '%'}</p>
+                    <p className="survey-detail__answer-percentage">{parseFloat(a.percentage * 100).toFixed(2) + '%'}</p>
                 </div>
               </div>
           ))
